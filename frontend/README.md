@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+PROYECTO FINAL Y MEDICIÓN DEL APRENDIZAJE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+DESCRIPCIÓN DE LA ACTIVIDAD.
+Realizar el análisis, modelado y desarrollo de un sistema que simule un
+Sistema de gestión hospitalaria.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+INSTRUCCIONES.
+Desarrollar el análisis, modelado UML y desarrollo para un sistema de gestión hospitalaria que
+administre las citas médicas, el historial clínico de pacientes y genere reportes médicos. El
+sistema debe manejar diferentes tipos de usuarios, donde cada uno tendrá funciones específicas.
+Cuando un paciente llega al hospital puede ser para agendar una cita o para ser atendido por una
+emergencia. A continuación se describen ambos casos:
+ Agendar cita
+En el caso de que el paciente desee agendar una cita, la recepcionista general le pedirá
+sus datos (nombre, edad, teléfono, nombre del médico y fecha en la que desea la cita) y
+si es necesario, podrá asignar el consultorio donde el paciente será atendido, una vez que
+los datos estén completos, la cita quedará agendada. Un día antes de la fecha prevista
+para la cita, la recepcionista se comunicará por teléfono con el paciente para confirmar su
+asistencia. Si el paciente desea realizar un cambio de fecha u hora, la recepcionista podrá
+ingresar al sistema y realizar los ajustes necesarios. Por otra parte, si el paciente no podrá
+acudir a su cita, esta deberá cancelarse (eliminarse del sistema).
+ Atención por emergencia
+Cuando un paciente llega al hospital para ser atendido de emergencia, la recepcionista
+general debe registrar el ingreso por emergencia en el sistema con los datos del paciente
+(nombre, edad y razón de ingreso), si el estado del paciente no es crítico, se asignará un
+consultorio , en caso contrario, el paciente es atendido directamente en la sala de
+emergencias (no se asigna un consultorio).
+Cuando un paciente llega a su cita médica (previamente agendada), pasa con la recepcionista
+personal del médico. Ella se encarga de registrar al paciente con su nombre, edad, teléfono, razón
+de visita y el sistema le asigna un número único de identificación. Este registro puede ser
+modificado en cualquier momento. Cuando el paciente ingresa al consultorio y es la primera vez
+que acude a una cita, el médico crea su expediente en el sistema, ingresa el número único de
+identificación del paciente (creado al momento de su registro) y describe su historial clínico
+(diagnósticos anteriores, padecimiento y tratamientos actuales, historia clínica familiar). De esta
+manera, cada que el paciente regrese a una cita, el médico podrá consultar o actualizar su
+historial. Al finalizar la cita, si el paciente necesita medicamento, el médico realiza la receta en el
+sistema ingresando el número único de identificación del paciente, nombre de los medicamentos
+y especificaciones.
+En cualquier momento, el médico puede solicitar a su recepcionista personal un listado de todos
+sus pacientes, mismo que la recepcionista puede generar desde el sistema.
+De ser necesario, una recepcionista personal podrá realizar en el sistema las mismas funciones
+que una recepcionista general.
+El sistema debe ser fácil de usar y tener una interfaz amigable. Además, por manejar datos
+confidenciales de los pacientes, cada usuario debe tener un nombre de usuario y contraseña
+únicos que les permitirá realizar sus funciones en el sistema.
