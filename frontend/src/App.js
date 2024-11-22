@@ -10,7 +10,7 @@ import Confirm from "./pages/general/Confirm";
 function App() {
   return (
     <Routes>
-      <Route path = "/" element={<General/>}/>
+      <Route path = "/" element={<Login/>}/>
       <Route path="/cancelar" element={<Cancel/>}/>
       <Route path="/modificar" element={<Modif/>}/>
       <Route path="/confirmar" element={<Confirm/>}/>
