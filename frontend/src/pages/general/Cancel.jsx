@@ -9,7 +9,7 @@ function Cancel() {
     <Box sx = {{
         display: 'flex',
         flexDirection: 'column',
-        width: '100vw',
+        width: '100%',
         height: '100vh',
         // marginTop: {xs: '10vh', sm: '10vh', md: '10vh'},
         // marginBottom: {xs: '1rem', sm: '1rem', md: '2rem'},
@@ -41,7 +41,7 @@ function Cancel() {
         }}>
             <Box sx = {{
                 backgroundColor: 'white', 
-                width: '33%',
+                width: '30%',
                 height: '100%',
                 borderTopLeftRadius: '1rem',
                 borderTopRightRadius: '1rem',
@@ -55,7 +55,7 @@ function Cancel() {
 
             <Box sx = {{
                 backgroundColor: 'white', 
-                width: '33%',
+                width: '30%',
                 height: '100%',
                 borderTopLeftRadius: '1rem',
                 borderTopRightRadius: '1rem',
@@ -69,7 +69,7 @@ function Cancel() {
 
             <Box sx = {{
                 backgroundColor: 'white', 
-                width: '33%',
+                width: '30%',
                 height: '100%',
                 borderTopLeftRadius: '1rem',
                 borderTopRightRadius: '1rem',

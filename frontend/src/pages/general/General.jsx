@@ -105,7 +105,7 @@ function General() {
     sx = {{
       display: 'flex',
       flexDirection: 'column',
-      width: '100vw',
+      width: '100%',
       height: '100vh',
       marginTop: {xs: '5vh', sm: '5vh', md: '5vh'},
       alignItems: 'center',
