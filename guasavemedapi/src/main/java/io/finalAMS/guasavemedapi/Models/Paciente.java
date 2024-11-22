@@ -11,30 +11,27 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Empleado {
+public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String usuario;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
     private String nombre;
 
     @Column(nullable = false)
-    private String tipo;
+    private int edad;
 
-    //Para Recepcionistas Personales
-    private Long idDoctor;
+    //Solo para citas normales
+    private String telefono;
 
     //No se puede relacionar multiples veces una columna
-    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cita> citas;
 
-    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Receta> recetas;
+
+    @OneToOne
+    private Expediente expediente;
 }
