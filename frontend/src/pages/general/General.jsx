@@ -237,6 +237,10 @@ function General() {
             sx={{ marginBottom: 2, marginTop: 2 }}
           />
 
+          <Typography>
+            {selectedPaciente && <p>Paciente seleccionado: {selectedPaciente}</p>}
+          </Typography>
+
           <List>
             {filteredItems.length > 0 ? (
               filteredItems.map((item, index) => (
@@ -255,9 +259,7 @@ function General() {
             )}
           </List>
 
-          <Typography>
-            {selectedPaciente && <p>Paciente seleccionado: {selectedPaciente}</p>}
-          </Typography>
+          
         </CustomDialog>
 
         <Button variant='outlined' size = 'large' onClick={handleOpenRegistro} sx = {{
