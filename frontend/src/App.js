@@ -6,21 +6,17 @@ import Cancel from "./pages/general/Cancel";
 import Personal from "./pages/personal/Personal";
 import Modif from "./pages/general/Modif";
 import Confirm from "./pages/general/Confirm";
-import {ThemeProvider } from "@mui/material/styles";
-import theme from "./utils/theme";
+import Medic from "./pages/medic/Medic";
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Routes>
-        <Route path = "/" element={<Login/>}/>
-        <Route path="/cancelar" element={<Cancel/>}/>
-        <Route path="/modificar" element={<Modif/>}/>
-        <Route path="/confirmar" element={<Confirm/>}/>
-      </Routes>
-    </ThemeProvider>
+    <Routes>
+      <Route path = "/" element={<General/>}/>
+      <Route path="/paciente" element={<Cancel/>}/>
+      <Route path="/modificar" element={<Modif/>}/>
+      <Route path="/confirmar" element={<Confirm/>}/>
+    </Routes>
   )
 }
 
 export default App;
-

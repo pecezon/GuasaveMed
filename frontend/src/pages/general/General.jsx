@@ -11,10 +11,11 @@ function General() {
   const user = "JUAN PABLO CARDENAS DE DIOS";
 
   const [openAgendar, setOpenAgendar] = useState(false);
-  const [openCancelar, setOpenCancelar] = useState(false);
+  const [openPaciente, setOpenPaciente] = useState(false);
   const [openRegistro, setOpenRegistro] = useState(false);
   const [openModif, setOpenModif] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [selectedPaciente, setSelectedPaciente] = useState(null);
 
   const initialFormData = {
     name: '',
@@ -30,8 +31,8 @@ function General() {
   const handleOpenAgendar = () => setOpenAgendar(true);
   const handleCloseAgendar = () => setOpenAgendar(false);
 
-  const handleOpenCancelar = () => setOpenCancelar(true);
-  const handleCloseCancelar = () => setOpenCancelar(false);
+  const handleOpenPaciente = () => setOpenPaciente(true);
+  const handleClosePaciente = () => setOpenPaciente(false);
 
   const handleOpenRegistro = () => setOpenRegistro(true);
   const handleCloseRegistro = () => setOpenRegistro(false);
@@ -47,15 +48,16 @@ function General() {
     setFormData((prev) => ({ ...prev, [name]: value}));
   };
 
+  {/*manejar los submit enviar de los pop ups*/}
   const handleSubmit = (dialogType) => {
     console.log('DATOS ENVIADOS: ', formData);
     setFormData(initialFormData);
 
     if (dialogType === 'agendar') {
       handleCloseAgendar();
-    } else if (dialogType === 'cancelar') {
-      handleCloseCancelar();
-      navigate('/cancelar');
+    } else if (dialogType === 'paciente') {
+      handleClosePaciente();
+      navigate('/paciente',{state: { selectedItem: selectedPaciente}});
     } else if (dialogType === 'emergencia') {
       handleCloseRegistro();
     } else if (dialogType === 'modificar') {
@@ -84,7 +86,7 @@ function General() {
   };
 
   const [searchTerm, setSearchTerm] = useState('');
-  const items = Array.from({ length: 100 }, (_, i) => `Nombre ${i + 1}`);
+  const items = Array.from({ length: 50 }, (_, i) => `Nombre ${i + 1}`);
 
   const appointments = Array.from({ length: 100 }, (_, i) => `Cita ${i + 1}`);
 
@@ -106,7 +108,7 @@ function General() {
       display: 'flex',
       flexDirection: 'column',
       width: '100%',
-      height: '100vh',
+      height: '100%',
       marginTop: {xs: '5vh', sm: '5vh', md: '5vh'},
       alignItems: 'center',
       textAlign: 'center',
@@ -132,8 +134,8 @@ function General() {
         alignItems: 'center',
         justifyContent: 'space-evenly',
         gap: { xs: '0.5rem', sm: '1rem', md: '1.5rem' },
-        marginTop: {xs: '30vh', sm: '30vh', md: '30vh'},
-        width: {xs: '80%', sm: '70%', md: '60%'},
+        marginTop: {xs: '90%', sm: '50%', md: '10%'},
+        width: {xs: '90%', sm: '70%', md: '60%'},
       }}>
 
         <Button variant='outlined' size = 'large' onClick={handleOpenAgendar} sx = {{
@@ -213,119 +215,49 @@ function General() {
             />
         </CustomDialog>
 
-        <Button variant='outlined' size = 'large' onClick={handleOpenCancelar} sx = {{
+        <Button variant='outlined' size = 'large' onClick={handleOpenPaciente} sx = {{
           fontSize: {xs: '12px',sm: '14px', md: '16px'},
           padding: {xs: '1rem 2rem', sm: '1.5rem 3rem', md: '2rem 4rem'},
           borderRadius: '1rem',
           boxShadow: 2,
-        }}>CANCELAR CITA</Button>
+        }}>PORTAL PACIENTES</Button>
 
         <CustomDialog
-        open={openCancelar}
-        onClose={handleCloseCancelar}
-        title={"FORMULARIO CANCELAR CITA"}
-        onSubmit={() => handleSubmit('cancelar')}
+          open={openPaciente}
+          onClose={handleClosePaciente}
+          title={"BUSCAR PACIENTE"}
+          onSubmit={() => handleSubmit('paciente')}
         >
+          <TextField
+            label="Buscar"
+            variant="outlined"
+            fullWidth
+            value={searchTerm}
+            onChange={handleSearch}
+            sx={{ marginBottom: 2, marginTop: 2 }}
+          />
 
-        <TextField
-          label="Buscar"
-          variant="outlined"
-          fullWidth
-          value={searchTerm}
-          onChange={handleSearch}
-          sx={{ marginBottom: 2, marginTop: 2}}
-        />
+          <List>
+            {filteredItems.length > 0 ? (
+              filteredItems.map((item, index) => (
+                <ListItem
+                  key={index}
+                  sx={{ textAlign: 'left', cursor: 'pointer' }}
+                  onClick={() => setSelectedPaciente(item)}
+                >
+                  <ListItemText primary={item} />
+                </ListItem>
+              ))
+            ) : (
+              <ListItem>
+                <ListItemText primary="No se encontraron resultados" />
+              </ListItem>
+            )}
+          </List>
 
-        <List sx = {{
-          maxHeight: {xs: '15vh', sm: '25vh', md: '40vh'},
-          overflowY: 'auto',
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '0.5rem',
-        }}>
-          {filteredItems.map((item, index) => (
-            <ListItem key={index} sx={{ textAlign: 'left' }}>
-              <ListItemText primary={item} />
-            </ListItem>
-          ))}
-        </List>
-        </CustomDialog>
-
-        <Button variant='outlined' size = 'large' onClick={handleOpenModif} sx = {{
-          fontSize: {xs: '12px',sm: '14px', md: '16px'},
-          padding: {xs: '1rem 2rem', sm: '1.5rem 3rem', md: '2rem 4rem'},
-          borderRadius: '1rem',
-          boxShadow: 2,
-        }}>MODIFICAR CITA</Button>
-
-        <CustomDialog
-        open={openModif}
-        onClose={handleCloseModif}
-        title={"FORMULARIO MODIFICAR CITA"}
-        onSubmit={() => handleSubmit('modificar')}
-        >
-
-        <TextField
-          label="Modificar"
-          variant="outlined"
-          fullWidth
-          value={searchTerm}
-          onChange={handleSearch}
-          sx={{ marginBottom: 2, marginTop: 2}}
-        />
-
-        <List sx = {{
-          maxHeight: {xs: '15vh', sm: '25vh', md: '40vh'},
-          overflowY: 'auto',
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '0.5rem',
-        }}>
-          {filteredItems.map((item, index) => (
-            <ListItem key={index} sx={{ textAlign: 'left' }}>
-              <ListItemText primary={item} />
-            </ListItem>
-          ))}
-        </List>
-        </CustomDialog>
-
-
-        <Button variant='outlined' size = 'large' onClick={handleOpenConfirm}sx = {{
-          fontSize: {xs: '12px',sm: '14px', md: '16px'},
-          padding: {xs: '1rem 2rem', sm: '1.5rem 3rem', md: '2rem 4rem'},
-          borderRadius: '1rem',
-          boxShadow: 2,
-        }}>CONFIRMAR CITA</Button>
-
-        <CustomDialog
-        open={openConfirm}
-        onClose={handleCloseConfirm}
-        title={"FORMULARIO CONFIRMAR CITA"}
-        onSubmit={() => handleSubmit('confirmar')}
-        >
-
-        <TextField
-          label="Confirmar"
-          variant="outlined"
-          fullWidth
-          value={searchTerm}
-          onChange={handleSearch}
-          sx={{ marginBottom: 2, marginTop: 2}}
-        />
-
-        <List sx = {{
-          maxHeight: {xs: '15vh', sm: '25vh', md: '40vh'},
-          overflowY: 'auto',
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '0.5rem',
-        }}>
-          {filteredAppointments.map((appointment, index) => (
-            <ListItem key={index} sx={{ textAlign: 'left' }}>
-              <ListItemText primary={appointment} />
-            </ListItem>
-          ))}
-        </List>
+          <Typography>
+            {selectedPaciente && <p>Paciente seleccionado: {selectedPaciente}</p>}
+          </Typography>
         </CustomDialog>
 
         <Button variant='outlined' size = 'large' onClick={handleOpenRegistro} sx = {{
@@ -381,6 +313,10 @@ function General() {
             </Select>
 
         </CustomDialog>
+
+        {/* <Box>
+          <Cancel/>
+        </Box> */}
       </Box>
 
 
