@@ -6,10 +6,12 @@ import io.finalAMS.guasavemedapi.Repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PacienteService {
 
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     @Autowired
     public PacienteService(PacienteRepository pacienteRepository){
@@ -18,5 +20,8 @@ public class PacienteService {
 
     public Paciente crearPaciente(Paciente paciente){
         return pacienteRepository.save(paciente);
+    }
+    public Optional<Paciente> obtenerPacientePorId(long id){
+        return pacienteRepository.findById(id);
     }
 }
