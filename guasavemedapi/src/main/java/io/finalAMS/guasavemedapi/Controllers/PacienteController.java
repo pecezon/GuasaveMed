@@ -27,8 +27,9 @@ public class PacienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Paciente>> obtenerPacientePorId(@PathVariable Long id){
-        Optional<Optional<Paciente>> paciente = Optional.ofNullable(pacienteService.obtenerPacientePorId(id));
-        return paciente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<Paciente> obtenerPacientePorId(@PathVariable Long id) {
+        Optional<Paciente> paciente = pacienteService.obtenerPacientePorId(id);
+        return paciente.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

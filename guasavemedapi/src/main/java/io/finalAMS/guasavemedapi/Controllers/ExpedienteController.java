@@ -30,11 +30,10 @@ public class ExpedienteController {
         return expedienteSerivce.obtenerExpedientes();
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Expediente>> obtenerExpedientePorId(@PathVariable Long id) {
-        Optional<Optional<Expediente>> expediente = Optional.ofNullable(expedienteSerivce.obtenerExpedientePorId(id));
-        return expediente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<Expediente> obtenerExpedientePorId(@PathVariable Long id) {
+        Optional<Expediente> expediente = expedienteSerivce.obtenerExpedientePorId(id);
+        return expediente.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-
-
 
 }

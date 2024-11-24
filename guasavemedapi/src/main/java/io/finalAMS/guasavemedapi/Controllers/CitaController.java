@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/cita")
@@ -29,6 +30,12 @@ public class CitaController {
     public ResponseEntity<Cita> borrarCita(long id){
      citaService.eliminarCita(id);
      return ResponseEntity.status((HttpStatus.NO_CONTENT)).build();
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Cita> obtenerCitaPorId(@PathVariable Long id){
+        Optional<Cita> citaGuardada = citaService.obtenerCitaPorId(id);
+        return citaGuardada.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
     @GetMapping("/paciente/{pacienteId}")
     public ResponseEntity<List<Cita>> obtenerCitasPorPaciente(@PathVariable Long pacienteId) {

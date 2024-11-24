@@ -25,8 +25,9 @@ public class RecetaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Receta>> obtenerRecetaporId(@PathVariable Long id){
-        Optional<Optional<Receta>> receta = Optional.ofNullable(recetaService.obtenerRecetaPorId(id));
-        return receta.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<Receta> obtenerRecetaPorId(@PathVariable Long id) {
+        Optional<Receta> receta = recetaService.obtenerRecetaPorId(id);
+        return receta.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

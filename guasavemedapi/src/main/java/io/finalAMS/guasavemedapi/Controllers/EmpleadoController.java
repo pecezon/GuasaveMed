@@ -26,9 +26,10 @@ public class EmpleadoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(empleadoGuardado);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Empleado>> getEmpleadoById(@PathVariable Long id) {
-        Optional<Optional<Empleado>> empleado = Optional.ofNullable(empleadoService.obtenerEmpleadoPorID(id));
-        return empleado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<Empleado> getEmpleadoById(@PathVariable Long id) {
+        Optional<Empleado> empleado = empleadoService.obtenerEmpleadoPorID(id);
+        return empleado.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
 }
