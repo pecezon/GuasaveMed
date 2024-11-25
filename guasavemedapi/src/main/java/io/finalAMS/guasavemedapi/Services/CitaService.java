@@ -26,6 +26,7 @@ public class CitaService {
     public Optional<Cita> obtenerCitaPorId(long id){
         return citaRepository.findById(id);
     }
+
     public List<Cita> obtenerCitasPorPaciente(Long pacienteId) {
         return citaRepository.findByPacienteId(pacienteId);
     }

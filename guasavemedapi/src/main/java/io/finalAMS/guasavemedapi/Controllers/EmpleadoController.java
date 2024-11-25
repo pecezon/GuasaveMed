@@ -20,13 +20,14 @@ public class EmpleadoController {
         this.empleadoService = empleadoService;
     }
 
-    @PostMapping("/crearEmpleado")
-    public ResponseEntity<Empleado> createEmpleado(@RequestBody Empleado empleado) {
+    @PostMapping
+    public ResponseEntity<Empleado> crearEmpleado(@RequestBody Empleado empleado) {
         Empleado empleadoGuardado = empleadoService.crearEmpleado(empleado);
         return ResponseEntity.status(HttpStatus.CREATED).body(empleadoGuardado);
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Empleado> getEmpleadoById(@PathVariable Long id) {
+    public ResponseEntity<Empleado> obtenerEmpleadoPorId(@PathVariable Long id) {
         Optional<Empleado> empleado = empleadoService.obtenerEmpleadoPorID(id);
         return empleado.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());

@@ -18,7 +18,7 @@ public class RecetaController {
         this.recetaService = recetaService;
     }
 
-    @PostMapping("/crearReceta")
+    @PostMapping
     public ResponseEntity<Receta> crearReceta(@RequestBody Receta receta){
         Receta recetaGuardada = recetaService.crearReceta(receta);
         return ResponseEntity.status(HttpStatus.CREATED).body(recetaGuardada);
