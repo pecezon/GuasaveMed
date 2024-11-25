@@ -32,7 +32,7 @@ public class Cita {
 
     //Solo para Citas Normales
     @ManyToOne
-    @JoinColumn(name = "empleado_id", nullable = false)
+    @JoinColumn(name = "empleado_id")
     private Empleado empleado;
 
     //Solo para Emergencias
