@@ -8,12 +8,13 @@ import Modif from "./pages/general/Modif";
 import Confirm from "./pages/general/Confirm";
 import {ThemeProvider } from "@mui/material/styles";
 import theme from "./utils/theme";
+import Medic from "./pages/medic/Medic";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path = "/" element={<Login/>}/>
+        <Route path = "/" element={<Medic/>}/>
         <Route path="/cancelar" element={<Cancel/>}/>
         <Route path="/modificar" element={<Modif/>}/>
         <Route path="/confirmar" element={<Confirm/>}/>
