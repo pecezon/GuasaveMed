@@ -1,5 +1,6 @@
 package io.finalAMS.guasavemedapi.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +34,10 @@ public class Empleado {
 
     //No se puede relacionar multiples veces una columna
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Cita> citas;
 
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Receta> recetas;
 }

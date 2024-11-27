@@ -1,5 +1,6 @@
 package io.finalAMS.guasavemedapi.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
