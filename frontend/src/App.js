@@ -15,10 +15,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path="/" element={<Medic />} />
+        <Route path="/" element={<Login />} />
         <Route path="/cancelar" element={<Cancel />} />
         <Route path="/modificar" element={<Modif />} />
         <Route path="/confirmar" element={<Confirm />} />
+        <Route path="/personal" element={<Personal />} />
+        <Route path="/general" element={<General />} />
+        <Route path="/medic" element={<Medic />} />
         <Route path="/test/paciente" element={<PacienteFunctionsTesting />} />
       </Routes>
     </ThemeProvider>
