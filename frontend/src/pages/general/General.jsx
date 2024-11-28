@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+
+//Imports de material ui
 import {
   Box,
   Dialog,
@@ -22,12 +24,17 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
+//React router
 import { useNavigate } from "react-router-dom";
+
+//Funciones de la API
 import { getDoctores } from "../../functions/empleado";
 import { crearCita } from "../../functions/cita";
-import { crearPaciente } from "../../functions/paciente";
+import { crearPaciente, getPacientes } from "../../functions/paciente";
 
 function General() {
+
+  //React router
   const navigate = useNavigate();
 
   //Info del usuario
@@ -44,7 +51,17 @@ function General() {
   const handleOpenAgendar = () => setOpenAgendar(true);
   const handleCloseAgendar = () => setOpenAgendar(false);
 
-  const handleOpenPaciente = () => setOpenPaciente(true);
+  //Que pasa cuando se abre el dialogo del portal pacientes
+  const handleOpenPaciente = () => {
+    //Filtrar pacientes
+    const filteredPacientes = pacientes.filter((item) =>
+      item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    //Mostrar dialogo
+    setOpenPaciente(true)
+  };
+
   const handleClosePaciente = () => setOpenPaciente(false);
 
   const handleOpenRegistro = () => setOpenRegistro(true);
@@ -100,6 +117,7 @@ function General() {
             })
               .then((res) => {
                 console.log("CITA CREADA: ", res);
+                window.alert("Cita creada exitosamente id del paciente: " + res.paciente.id);
               })
               .catch((err) => console.error("Error creando cita: ", err));
           } else {
@@ -126,15 +144,39 @@ function General() {
   //Doctores guarda el listado de doctores
   const [doctores, setDoctores] = useState([]);
 
-  useEffect(() => {
-    const getMedics = async () => {
-      const res = await getDoctores();
-      setDoctores(res);
-      console.log("MEDICOS: ", res);
-    };
+  //Pacientes guarda el listado de pacientes
+  const [pacientes, setPacientes] = useState([]);
 
+  //Get doctores y pacientes
+  const getMedics = async () => {
+    const res = await getDoctores();
+    setDoctores(res);
+    console.log("MEDICOS: ", res);
+  };
+
+  const GetPacientes = async () => {
+    const res = await getPacientes();
+    setPacientes(res);
+    console.log("PACIENTES: ", res);
+  }
+
+  //Codigo ejecutado al cargar la pagina
+  useEffect(() => {
+    GetPacientes();
     getMedics();
   }, []);
+
+  //Filtrar pacientes
+
+  //Manejo de busqueda
+  const [searchTerm, setSearchTerm] = useState("");
+
+  //Filtrar pacientes
+  /*
+  const filteredPacientes = pacientes.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  */
 
   const reasons = [
     { value: "1", label: "Exceso de Homosexualidad" },
@@ -146,18 +188,11 @@ function General() {
     setSelectMedic(e.target.value);
   };
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const items = Array.from({ length: 50 }, (_, i) => `Nombre ${i + 1}`);
-
   const appointments = Array.from({ length: 100 }, (_, i) => `Cita ${i + 1}`);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
-
-  const filteredItems = items.filter((item) =>
-    item.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const filteredAppointments = appointments.filter((appointment) =>
     appointment.toLowerCase().includes(searchTerm.toLowerCase())
@@ -293,6 +328,7 @@ function General() {
           </LocalizationProvider>
         </CustomDialog>
 
+        {/* Boton Pacientes */}
         <Button
           variant="outlined"
           size="large"
@@ -307,12 +343,15 @@ function General() {
           PORTAL PACIENTES
         </Button>
 
+        {/* Dialog de portal pacientes */}
         <CustomDialog
           open={openPaciente}
           onClose={handleClosePaciente}
           title={"BUSCAR PACIENTE"}
           onSubmit={() => handleSubmit("paciente")}
         >
+
+          {/* Buscador */}
           <TextField
             label="Buscar"
             variant="outlined"
@@ -322,21 +361,27 @@ function General() {
             sx={{ marginBottom: 2, marginTop: 2 }}
           />
 
+          {/* Paciente seleccionado */}
           <Typography>
             {selectedPaciente && (
               <p>Paciente seleccionado: {selectedPaciente}</p>
             )}
           </Typography>
 
+          {/* Lista de pacientes */}  
           <List>
-            {filteredItems.length > 0 ? (
-              filteredItems.map((item, index) => (
+            {pacientes.length > 0 ? (
+              pacientes.map((paciente) => (
                 <ListItem
-                  key={index}
+                  key={paciente.id}
                   sx={{ textAlign: "left", cursor: "pointer" }}
-                  onClick={() => setSelectedPaciente(item)}
+
+                  onClick={() => {
+                    setSelectedPaciente(paciente)
+                    navigate("/cancelar", { state: { paciente: paciente } });
+                  }}
                 >
-                  <ListItemText primary={item} />
+                  <ListItemText primary={paciente.nombre} />
                 </ListItem>
               ))
             ) : (

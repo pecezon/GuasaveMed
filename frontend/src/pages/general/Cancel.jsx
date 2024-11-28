@@ -1,15 +1,24 @@
 import React from "react";
+
+// Importar componentes de Material-UI
 import { Box, Typography } from "@mui/material";
+
+// Importar componentes personalizados
 import CustomTable from "../../components/CustomTable";
 import CustomTableAppoint from "../../components/CustomTableAppoint";
 import CustomTablePast from "../../components/CustomTablePast";
+
+// Importar hook para obtener la ubicacion actual
 import { useLocation } from "react-router-dom";
 
 function Cancel() {
-  const location = useLocation();
-  const { selectedItem } = location.state || {};
 
-  const pacient = selectedItem || "Paciente no seleccionado";
+  //Conectar con la pagina padre que nos redirige a esta pagina
+  const location = useLocation();
+  const { paciente } = location.state || {};
+
+  //Paciente actual
+  const pacient = paciente || "Paciente no seleccionado";
 
   return (
     <Box
@@ -24,6 +33,8 @@ function Cancel() {
       }}
     >
       <Box sx={{ alignContent: "center", alignItems: "center" }}>
+
+        {/* Titulo */}
         <Typography
           sx={{
             fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
@@ -33,6 +44,7 @@ function Cancel() {
           PORTAL PACIENTES
         </Typography>
 
+        {/* Nombre del paciente */}
         <Typography
           sx={{
             textAlign: "center",
@@ -40,7 +52,7 @@ function Cancel() {
             marginBottom: "1rem",
           }}
         >
-          PACIENTE: {pacient}
+          PACIENTE: {pacient.nombre}
         </Typography>
       </Box>
 
@@ -57,6 +69,7 @@ function Cancel() {
           alignSelf: "center",
         }}
       >
+        {/* Informacion del paciente */}
         <Box
           sx={{
             backgroundColor: "white",
@@ -72,7 +85,8 @@ function Cancel() {
             INFORMACION DEL PACIENTE
           </Typography>
 
-          <CustomTable />
+          {/* Tabla personalizada */}
+          <CustomTable pacientes={[paciente]}/>
         </Box>
 
         <Box
@@ -90,6 +104,7 @@ function Cancel() {
             CITAS PROGRAMADAS
           </Typography>
 
+          {/* Tabla personalizada para citas programadas */}
           <CustomTableAppoint />
         </Box>
 
