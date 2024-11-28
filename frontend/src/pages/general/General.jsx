@@ -15,29 +15,31 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CustomDialog from "../../components/CustomDialog";
 import Cancel from "../general/Cancel";
+
+//Manejo de fechas
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+
 import { useNavigate } from "react-router-dom";
+import { getDoctores } from "../../functions/empleado";
+import { crearCita } from "../../functions/cita";
+import { crearPaciente } from "../../functions/paciente";
 
 function General() {
   const navigate = useNavigate();
+
+  //Info del usuario
   const user = "JUAN PABLO CARDENAS DE DIOS";
 
+  //Pop ups y sus funciones
   const [openAgendar, setOpenAgendar] = useState(false);
   const [openPaciente, setOpenPaciente] = useState(false);
   const [openRegistro, setOpenRegistro] = useState(false);
   const [openModif, setOpenModif] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [selectedPaciente, setSelectedPaciente] = useState(null);
-
-  const initialFormData = {
-    name: "",
-    age: "",
-    phone: "",
-    medic: "",
-    date: "",
-    reason: "",
-  };
-
-  const [formData, setFormData] = useState(initialFormData);
 
   const handleOpenAgendar = () => setOpenAgendar(true);
   const handleCloseAgendar = () => setOpenAgendar(false);
@@ -59,14 +61,53 @@ function General() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  {
-    /*manejar los submit enviar de los pop ups*/
-  }
+  //Manejo de formularios
+  const initialFormData = {
+    name: "",
+    age: "",
+    phone: "",
+    medic: "",
+    date: dayjs(),
+    reason: "",
+  };
+  const [formData, setFormData] = useState(initialFormData);
+
+  //Manejo de ventanas
   const handleSubmit = (dialogType) => {
     console.log("DATOS ENVIADOS: ", formData);
     setFormData(initialFormData);
 
     if (dialogType === "agendar") {
+      //Logica de crear cita/crear paciente
+      //Cita actual
+      // Al crear una cita, se debe enviar el id del paciente, el id del médico, la fecha y la hora
+      // Antes de crear una cita se debe crear un paciente
+
+      crearPaciente({
+        nombre: formData.name,
+        edad: formData.age,
+        telefono: formData.phone,
+      })
+        .then((res) => {
+          console.log("PACIENTE CREADO: ", res);
+          if (res && res.id) {
+            console.log("Paciente ID: ", res.id);
+            crearCita({
+              paciente: { id: res.id },
+              empleado: { id: formData.medic },
+              fecha: formData.date.toISOString(),
+              tipo: "cn",
+            })
+              .then((res) => {
+                console.log("CITA CREADA: ", res);
+              })
+              .catch((err) => console.error("Error creando cita: ", err));
+          } else {
+            console.error("Paciente ID no encontrado");
+          }
+        })
+        .catch((err) => console.error("Error creando paciente: ", err));
+
       handleCloseAgendar();
     } else if (dialogType === "paciente") {
       handleClosePaciente();
@@ -82,11 +123,18 @@ function General() {
     }
   };
 
-  const medics = [
-    { value: "1", label: "MARTIN CARDENAS" },
-    { value: "2", label: "FERNANDO QUEVEDO" },
-    { value: "3", label: "ESTELA DE DIOS" },
-  ];
+  //Doctores guarda el listado de doctores
+  const [doctores, setDoctores] = useState([]);
+
+  useEffect(() => {
+    const getMedics = async () => {
+      const res = await getDoctores();
+      setDoctores(res);
+      console.log("MEDICOS: ", res);
+    };
+
+    getMedics();
+  }, []);
 
   const reasons = [
     { value: "1", label: "Exceso de Homosexualidad" },
@@ -192,7 +240,6 @@ function General() {
             value={formData.name}
             onChange={handleChange}
           />
-
           <TextField
             margin="dense"
             name="age"
@@ -203,7 +250,6 @@ function General() {
             value={formData.age}
             onChange={handleChange}
           />
-
           <TextField
             margin="dense"
             name="phone"
@@ -214,7 +260,6 @@ function General() {
             value={formData.phone}
             onChange={handleChange}
           />
-
           <Select
             name="medic"
             value={formData.medic}
@@ -227,24 +272,25 @@ function General() {
             <MenuItem value="" disabled>
               Seleccione un médico
             </MenuItem>
-            {medics.map((medic) => (
-              <MenuItem key={medic.value} value={medic.value}>
-                {medic.label}
+            {doctores.map((medic) => (
+              <MenuItem key={medic.id} value={medic.id}>
+                {medic.nombre}
               </MenuItem>
             ))}
           </Select>
 
-          <TextField
-            margin="dense"
-            name="date"
-            label="Fecha de Cita"
-            type="date"
-            fullWidth
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            value={formData.date}
-            onChange={handleChange}
-          />
+          {/* Manejo de fecha y horas*/}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              sx={{ marginTop: 2 }}
+              label="Fecha y Hora"
+              value={formData.date}
+              onChange={(newValue) =>
+                setFormData((prev) => ({ ...prev, date: newValue }))
+              }
+              renderInput={(params) => <TextField {...params} fullWidth />}
+            />
+          </LocalizationProvider>
         </CustomDialog>
 
         <Button

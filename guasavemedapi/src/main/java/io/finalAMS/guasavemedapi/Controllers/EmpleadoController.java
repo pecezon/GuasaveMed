@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,6 +32,11 @@ public class EmpleadoController {
         Optional<Empleado> empleado = empleadoService.obtenerEmpleadoPorID(id);
         return empleado.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/doctores")
+    public List<Empleado> obtenerDoctores(){
+        return empleadoService.obtenerDoctores();
     }
 
 }
