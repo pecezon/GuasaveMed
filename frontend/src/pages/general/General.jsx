@@ -33,7 +33,6 @@ import { crearCita } from "../../functions/cita";
 import { crearPaciente, getPacientes } from "../../functions/paciente";
 
 function General() {
-
   //React router
   const navigate = useNavigate();
 
@@ -59,7 +58,7 @@ function General() {
     );
 
     //Mostrar dialogo
-    setOpenPaciente(true)
+    setOpenPaciente(true);
   };
 
   const handleClosePaciente = () => setOpenPaciente(false);
@@ -117,7 +116,9 @@ function General() {
             })
               .then((res) => {
                 console.log("CITA CREADA: ", res);
-                window.alert("Cita creada exitosamente id del paciente: " + res.paciente.id);
+                window.alert(
+                  "Cita creada exitosamente id del paciente: " + res.paciente.id
+                );
               })
               .catch((err) => console.error("Error creando cita: ", err));
           } else {
@@ -158,7 +159,7 @@ function General() {
     const res = await getPacientes();
     setPacientes(res);
     console.log("PACIENTES: ", res);
-  }
+  };
 
   //Codigo ejecutado al cargar la pagina
   useEffect(() => {
@@ -170,13 +171,6 @@ function General() {
 
   //Manejo de busqueda
   const [searchTerm, setSearchTerm] = useState("");
-
-  //Filtrar pacientes
-  /*
-  const filteredPacientes = pacientes.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  */
 
   const reasons = [
     { value: "1", label: "Exceso de Homosexualidad" },
@@ -350,7 +344,6 @@ function General() {
           title={"BUSCAR PACIENTE"}
           onSubmit={() => handleSubmit("paciente")}
         >
-
           {/* Buscador */}
           <TextField
             label="Buscar"
@@ -368,16 +361,15 @@ function General() {
             )}
           </Typography>
 
-          {/* Lista de pacientes */}  
+          {/* Lista de pacientes */}
           <List>
             {pacientes.length > 0 ? (
               pacientes.map((paciente) => (
                 <ListItem
                   key={paciente.id}
                   sx={{ textAlign: "left", cursor: "pointer" }}
-
                   onClick={() => {
-                    setSelectedPaciente(paciente)
+                    setSelectedPaciente(paciente);
                     navigate("/cancelar", { state: { paciente: paciente } });
                   }}
                 >
