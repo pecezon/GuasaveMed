@@ -144,7 +144,7 @@ function Login() {
         alt="Imagen de bienvenida"
         sx={{
           position: "absolute",
-          top: "0%",
+          top: "1%",
           left: "50%",
           transform: "translateX(-50%)",
           width: "50%",

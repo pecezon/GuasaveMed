@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Button, TextField} from '@mui/material'; 
 import CustomDialog from '../../components/CustomDialog'; 
 import { useNavigate } from 'react-router-dom';
+import '@fontsource/bayon';
 
 function Medic() {
   const navegar = useNavigate();
@@ -56,60 +57,130 @@ function Medic() {
   
   return (
     <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
+      height: '100vh',
+      marginTop: { xs: '5vh', sm: '5vh', md: '5vh' },
+      alignItems: 'center',
+      textAlign: 'center',
+      padding: { xs: '0rem', sm: '0.5rem' },
+      position: 'relative',
+    }}
+  >
+    <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
+        position: 'absolute',
         width: '100%',
-        height: '100vh',
-        marginTop: {xs: '5vh', sm: '5vh', md: '5vh'},
+        height: '100%',
+        backgroundImage: "url('/images/backgroundDoodles.png')",
+        backgroundSize: '100%',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        opacity: 0.12,
+        zIndex: 1,
+      }}
+    />
+
+    <Box
+      sx={{
+        position: 'absolute',
+        top: '60%', 
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100%', 
+        height: '50%',
+        backgroundColor: '#E6F2FC',
+        borderRadius: '16px',
+        boxShadow: 'inset 0px 4px 47.8px rgba(39, 91, 158, 0.25)',
+        zIndex: 2,
+      }}
+    />
+
+    <Box
+      component="img"
+      src="/images/WELCOME.png"
+      alt="Imagen de bienvenida"
+      sx={{
         alignItems: 'center',
-        textAlign: 'center',
-        padding: { xs: '0rem', sm: '0.5rem'},
-      }}>
+        position: 'absolute',
+        top: '1%',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '50%',
+        height: 'auto',
+        zIndex: 3, 
+      }}
+    />
+    <Box sx={{ zIndex: 4 }}> 
+      <Typography
+        sx={{
+          fontFamily: 'Bayon, sans-serif', 
+          position: 'absolute',
+          top: '30%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          fontSize: { xs: '1rem', sm: '1.5rem', md: '2rem' },
+          color: '#56210A',
+        }}
+      >
+        Bienvenido Dr. {usuario}
+      </Typography>
 
-      <Box>
-        <Typography sx={{ fontSize: {xs: '1.5rem', sm: '2rem', md: '2.5rem'}, textAlign: 'center' }}>
-          Médico
-        </Typography>
-        <Typography sx={{ fontSize: {xs: '1rem', sm: '1.5rem', md: '2rem'}, marginTop: '2rem' }}>
-          Bienvenido Dr. {usuario}
-        </Typography>
-
-        
-        <Button variant='outlined' size = 'large' onClick={handleOpenCrearExp} sx = {{
-          fontSize: {xs: '12px',sm: '14px', md: '16px'},
-          padding: {xs: '1rem 2rem', sm: '1.5rem 3rem', md: '2rem 4rem'},
-          borderRadius: '1rem',
+      <Button
+        variant="contained" // Use "contained" to enable background color fill
+        size="large"
+        onClick={handleOpenCrearExp}
+        sx={{
+          fontFamily: "Bayon, sans-serif", 
+          fontSizeAdjust: "20%",
+          width: "23%",
+          height: "50%",
+          marginX: 1, 
+          top: "400%",
+          left: "1%",
+          fontSize: { xs: "12px", sm: "14px", md: "16px" },
+          padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+          borderRadius: "1rem",
           boxShadow: 2,
-        }}>CREAR EXPEDIENTE</Button>
-        
-        <CustomDialog 
-          open={openCrearExp}
-          onClose={handleCloseCrearExp}
-          title="Crear expediente" 
-          onSubmit={handleSubmitExp} 
-        >
-          <TextField
+          color: "#56210A",
+          backgroundColor: "#FFFAF4", 
+          "&:hover": {
+          backgroundColor: "#FFFAF4",
+          },
+        }}
+      >
+        CREAR EXPEDIENTE
+      </Button>
+
+      <CustomDialog
+        open={openCrearExp}
+        onClose={handleCloseCrearExp}
+        title="Crear expediente"
+        onSubmit={handleSubmitExp}
+      >
+        <TextField
           id="outlined-number"
           label="Id"
           type="number"
-          sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
+          sx={{ marginBottom: '1rem', marginTop: '1rem' }}
           slotProps={{
             inputLabel: {
               shrink: true,
             },
           }}
-          />
-          <TextField
-            label="Diagnósticos anteriores"
-            name="diagnosticos"
-            value={historialClinico.diagnosticos}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
+        />
+        <TextField
+          label="Diagnósticos anteriores"
+          name="diagnosticos"
+          value={historialClinico.diagnosticos}
+          onChange={handleChange}
+          fullWidth
+          multiline
+          rows={4}
+          sx={{ marginBottom: '1rem' }}
+        />
           <TextField
             label="Padecimiento actual"
             name="padecimiento"
@@ -142,12 +213,28 @@ function Medic() {
           />
         </CustomDialog>
 
-        <Button variant='outlined' size = 'large' onClick={handleOpenConsultarHis} sx = {{
-          fontSize: {xs: '12px',sm: '14px', md: '16px'},
-          padding: {xs: '1rem 2rem', sm: '1.5rem 3rem', md: '2rem 4rem'},
-          borderRadius: '1rem',
-          boxShadow: 2,
-        }}>CONSULTAR HISTORIAL</Button>
+        <Button size = 'large' onClick={handleOpenConsultarHis} 
+          sx={{
+            fontFamily: "Bayon, sans-serif", 
+            fontSizeAdjust: "20%",
+            width: "23%",
+            height: "50%",
+            marginX: 2, 
+            top: "400%",
+            left: "2%",
+            fontSize: { xs: "12px", sm: "14px", md: "16px" },
+            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+            borderRadius: "1rem",
+            boxShadow: 2,
+            color: "#56210A",
+            backgroundColor: "#FFFAF4", 
+            "&:hover": {
+            backgroundColor: "#FFFAF4",
+            },
+          }}
+        >
+          CONSULTAR HISTORIAL
+        </Button>
 
         <CustomDialog 
           open={openConsultarHis}
@@ -236,12 +323,28 @@ function Medic() {
           />
         </CustomDialog>
 
-        <Button variant='outlined' size = 'large' onClick={handleOpenRealizarRec} sx = {{
-          fontSize: {xs: '12px',sm: '14px', md: '16px'},
-          padding: {xs: '1rem 2rem', sm: '1.5rem 3rem', md: '2rem 4rem'},
-          borderRadius: '1rem',
-          boxShadow: 2,
-        }}>HACER RECETA</Button>
+        <Button size = 'large' onClick={handleOpenRealizarRec} 
+          sx={{
+            fontFamily: "Bayon, sans-serif", 
+            fontSizeAdjust: "20%",
+            width: "20%",
+            height: "50%",
+            marginX: 2, 
+            top: "400%",
+            left: "3%",
+            fontSize: { xs: "12px", sm: "14px", md: "16px" },
+            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+            borderRadius: "1rem",
+            boxShadow: 2,
+            color: "#56210A",
+            backgroundColor: "#FFFAF4", 
+            "&:hover": {
+            backgroundColor: "#FFFAF4",
+            },
+          }}
+        >
+          HACER RECETA
+          </Button>
 
         <CustomDialog 
           open={openRealizarRec}
@@ -283,12 +386,27 @@ function Medic() {
           
         </CustomDialog>
 
-        <Button variant='outlined' size = 'large' onClick={handleOpenActualizarHis} sx = {{
-          fontSize: {xs: '12px',sm: '14px', md: '16px'},
-          padding: {xs: '1rem 2rem', sm: '1.5rem 3rem', md: '2rem 4rem'},
-          borderRadius: '1rem',
-          boxShadow: 2,
-        }}>ACTUALIZAR DATOS</Button>
+        <Button size = 'large' onClick={handleOpenActualizarHis} 
+          sx={{
+            fontFamily: "Bayon, sans-serif", 
+            fontSizeAdjust: "20%",
+            marginX: 2, 
+            height:"15%",
+            top: "400%",
+            left: "3%",
+            fontSize: { xs: "12px", sm: "14px", md: "16px" },
+            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+            borderRadius: "1rem",
+            boxShadow: 2,
+            color: "#56210A",
+            backgroundColor: "#FFFAF4", 
+            "&:hover": {
+            backgroundColor: "#FFFAF4",
+            },
+          }}
+        >
+          ACTUALIZAR DATOS
+        </Button>
         
         <CustomDialog 
           open={openActualizarHis}
