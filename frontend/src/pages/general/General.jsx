@@ -212,6 +212,18 @@ function General() {
       }}
     >
       <Box>
+        
+        <Box 
+        component="img"
+        src="/images/WELCOME.png"
+        alt="Welcome Image"
+        sx={{
+          alignItems: 'center',
+          width: '90%',
+        }}
+        >
+        </Box>
+
         <Typography
           sx={{
             fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
@@ -227,7 +239,7 @@ function General() {
             marginTop: "2rem",
           }}
         >
-          HOLA {user}
+          {user}
         </Typography>
       </Box>
 

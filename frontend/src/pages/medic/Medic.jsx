@@ -58,211 +58,101 @@ function Medic() {
   return (
     <Box
     sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%',
-      height: '100vh',
-      marginTop: { xs: '5vh', sm: '5vh', md: '5vh' },
-      alignItems: 'center',
-      textAlign: 'center',
-      padding: { xs: '0rem', sm: '0.5rem' },
-      position: 'relative',
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      height: "100%",
+      marginTop: { xs: "5vh", sm: "5vh", md: "5vh" },
+      alignItems: "center",
+      textAlign: "center",
+      padding: { xs: "0rem", sm: "0.5rem" },
     }}
   >
-    <Box
-      sx={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundImage: "url('/images/backgroundDoodles.png')",
-        backgroundSize: '100%',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        opacity: 0.12,
-        zIndex: 1,
-      }}
-    />
-
-    <Box
-      sx={{
-        position: 'absolute',
-        top: '60%', 
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '100%', 
-        height: '50%',
-        backgroundColor: '#E6F2FC',
-        borderRadius: '16px',
-        boxShadow: 'inset 0px 4px 47.8px rgba(39, 91, 158, 0.25)',
-        zIndex: 2,
-      }}
-    />
-
-    <Box
+    <Box>
+      <Box 
       component="img"
       src="/images/WELCOME.png"
-      alt="Imagen de bienvenida"
+      alt="Welcome Image"
       sx={{
         alignItems: 'center',
-        position: 'absolute',
-        top: '1%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '50%',
-        height: 'auto',
-        zIndex: 3, 
+        width: '90%',
       }}
-    />
-    <Box sx={{ zIndex: 4 }}> 
-      <Typography
-        sx={{
-          fontFamily: 'Bayon, sans-serif', 
-          position: 'absolute',
-          top: '30%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          fontSize: { xs: '1rem', sm: '1.5rem', md: '2rem' },
-          color: '#56210A',
-        }}
       >
-        Bienvenido Dr. {usuario}
-      </Typography>
-
-      <Button
-        variant="contained" // Use "contained" to enable background color fill
-        size="large"
-        onClick={handleOpenCrearExp}
-        sx={{
-          fontFamily: "Bayon, sans-serif", 
-          fontSizeAdjust: "20%",
-          width: "23%",
-          height: "50%",
-          marginX: 1, 
-          top: "400%",
-          left: "1%",
-          fontSize: { xs: "12px", sm: "14px", md: "16px" },
-          padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
-          borderRadius: "1rem",
-          boxShadow: 2,
-          color: "#56210A",
-          backgroundColor: "#FFFAF4", 
-          "&:hover": {
-          backgroundColor: "#FFFAF4",
-          },
-        }}
-      >
-        CREAR EXPEDIENTE
-      </Button>
-
-      <CustomDialog
-        open={openCrearExp}
-        onClose={handleCloseCrearExp}
-        title="Crear expediente"
-        onSubmit={handleSubmitExp}
-      >
-        <TextField
-          id="outlined-number"
-          label="Id"
-          type="number"
-          sx={{ marginBottom: '1rem', marginTop: '1rem' }}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
+      </Box>
+      
+        <Typography
+          sx={{
+            fontSize: { xs: "1rem", sm: "1.5rem", md: "2rem" },
+            marginTop: "2rem",
           }}
-        />
-        <TextField
-          label="Diagnósticos anteriores"
-          name="diagnosticos"
-          value={historialClinico.diagnosticos}
-          onChange={handleChange}
-          fullWidth
-          multiline
-          rows={4}
-          sx={{ marginBottom: '1rem' }}
-        />
-          <TextField
-            label="Padecimiento actual"
-            name="padecimiento"
-            value={historialClinico.padecimiento}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          <TextField
-            label="Tratamientos actuales"
-            name="tratamientos"
-            value={historialClinico.tratamientos}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          <TextField
-            label="Historia clínica familiar"
-            name="historiaFamiliar"
-            value={historialClinico.historiaFamiliar}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-        </CustomDialog>
+        >
+          DOCTOR
+        </Typography>
+        <Typography sx= {{
+          fontSize: { xs: "1rem", sm: "1.5rem", md: "2rem" },
+          marginTop: "2rem",
+        }}>
+          {usuario}
+        </Typography>
+    </Box>   
 
-        <Button size = 'large' onClick={handleOpenConsultarHis} 
+    <Box sx = {{
+      marginTop: { xs: "90%", sm: "50%", md: "10%" },
+      backgroundColor:'#E6F2FC',
+      width: '100%',
+      height: 'auto',
+      justifyContent: 'center',
+      display: 'flex',
+      alignSelf: 'center',
+      paddingTop: {xs: '1rem', sm: '2rem', md: '4rem'},
+      paddingBottom: {xs: '1rem', sm: '2rem', md: '4rem'},
+      borderRadius: 10
+    }}>
+      <Box sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
+          width: { xs: "90%", sm: "70%", md: "60%" },
+        }}
+      >
+        
+          <Button
+          variant="outlined" // Use "contained" to enable background color fill
+          size="large"
+          onClick={handleOpenCrearExp}
           sx={{
             fontFamily: "Bayon, sans-serif", 
-            fontSizeAdjust: "20%",
-            width: "23%",
-            height: "50%",
-            marginX: 2, 
-            top: "400%",
-            left: "2%",
             fontSize: { xs: "12px", sm: "14px", md: "16px" },
             padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
             borderRadius: "1rem",
             boxShadow: 2,
-            color: "#56210A",
-            backgroundColor: "#FFFAF4", 
-            "&:hover": {
-            backgroundColor: "#FFFAF4",
-            },
+            background: '#FFFFFF'
           }}
         >
-          CONSULTAR HISTORIAL
+          CREAR EXPEDIENTE
         </Button>
 
-        <CustomDialog 
-          open={openConsultarHis}
-          onClose={handleCloseConsultarHis}
-          title="Consultar Historial" 
-          onSubmit={handleSubmitCon} 
+        <CustomDialog
+          open={openCrearExp}
+          onClose={handleCloseCrearExp}
+          title="Crear expediente"
+          onSubmit={handleSubmitExp}
         >
           <TextField
-            id='numberConsultar'
+            id="outlined-number"
             label="Id"
-            //value={historialClinico.id}
             type="number"
-            sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
+            sx={{ marginBottom: '1rem', marginTop: '1rem' }}
             slotProps={{
               inputLabel: {
                 shrink: true,
               },
             }}
-          
           />
           <TextField
-            disabled
-
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
-            }}
             label="Diagnósticos anteriores"
             name="diagnosticos"
             value={historialClinico.diagnosticos}
@@ -272,89 +162,213 @@ function Medic() {
             rows={4}
             sx={{ marginBottom: '1rem' }}
           />
-          <TextField
-            disabled
+            <TextField
+              label="Padecimiento actual"
+              name="padecimiento"
+              value={historialClinico.padecimiento}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+              label="Tratamientos actuales"
+              name="tratamientos"
+              value={historialClinico.tratamientos}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+              label="Historia clínica familiar"
+              name="historiaFamiliar"
+              value={historialClinico.historiaFamiliar}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+          </CustomDialog>
 
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
+          <Button size = 'large' onClick={handleOpenConsultarHis} 
+            sx={{
+              fontFamily: "Bayon, sans-serif", 
+              fontSize: { xs: "12px", sm: "14px", md: "16px" },
+              padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+              borderRadius: "1rem",
+              boxShadow: 2,
+              background: '#FFFFFF'
             }}
-            label="Padecimiento actual"
-            name="padecimiento"
-            value={historialClinico.padecimiento}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          <TextField
-          disabled
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
-            }}
-            label="Tratamientos actuales"
-            name="tratamientos"
-            value={historialClinico.tratamientos}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          <TextField
-          disabled
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
-            }}
-            label="Historia clínica familiar"
-            name="historiaFamiliar"
-            value={historialClinico.historiaFamiliar}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-        </CustomDialog>
-
-        <Button size = 'large' onClick={handleOpenRealizarRec} 
-          sx={{
-            fontFamily: "Bayon, sans-serif", 
-            fontSizeAdjust: "20%",
-            width: "20%",
-            height: "50%",
-            marginX: 2, 
-            top: "400%",
-            left: "3%",
-            fontSize: { xs: "12px", sm: "14px", md: "16px" },
-            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
-            borderRadius: "1rem",
-            boxShadow: 2,
-            color: "#56210A",
-            backgroundColor: "#FFFAF4", 
-            "&:hover": {
-            backgroundColor: "#FFFAF4",
-            },
-          }}
-        >
-          HACER RECETA
+          >
+            CONSULTAR HISTORIAL
           </Button>
 
-        <CustomDialog 
-          open={openRealizarRec}
-          onClose={handleCloseRealizarRec}
-          title="Hacer Receta" 
-          onSubmit={handleSubmitRec} 
-        >
-          <TextField
-            label="numberReceta"
-            //value={historialClinico.id}
+          <CustomDialog 
+            open={openConsultarHis}
+            onClose={handleCloseConsultarHis}
+            title="Consultar Historial" 
+            onSubmit={handleSubmitCon} 
+          >
+            <TextField
+              id='numberConsultar'
+              label="Id"
+              //value={historialClinico.id}
+              type="number"
+              sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
+              }}
+            
+            />
+            <TextField
+              disabled
+
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+              label="Diagnósticos anteriores"
+              name="diagnosticos"
+              value={historialClinico.diagnosticos}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+              disabled
+
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+              label="Padecimiento actual"
+              name="padecimiento"
+              value={historialClinico.padecimiento}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+            disabled
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+              label="Tratamientos actuales"
+              name="tratamientos"
+              value={historialClinico.tratamientos}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+            disabled
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+              label="Historia clínica familiar"
+              name="historiaFamiliar"
+              value={historialClinico.historiaFamiliar}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+          </CustomDialog>
+
+          <Button size = 'large' onClick={handleOpenRealizarRec} 
+            sx={{
+              fontFamily: "Bayon, sans-serif", 
+              fontSize: { xs: "12px", sm: "14px", md: "16px" },
+              padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+              borderRadius: "1rem",
+              boxShadow: 2,
+              background: '#FFFFFF'
+            }}
+          >
+            HACER RECETA
+            </Button>
+
+          <CustomDialog 
+            open={openRealizarRec}
+            onClose={handleCloseRealizarRec}
+            title="Hacer Receta" 
+            onSubmit={handleSubmitRec} 
+          >
+            <TextField
+              label="numberReceta"
+              //value={historialClinico.id}
+              type="number"
+              sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
+              }}
+            />
+            <TextField
+              label="Nombre del medicamento"
+              name="medicamentos"
+              //value={historialClinico.diagnosticos}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+              label="Especificaciones"
+              name="Especificaciones"
+              //value={historialClinico.padecimiento}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            
+          </CustomDialog>
+
+          <Button size = 'large' onClick={handleOpenActualizarHis} 
+            sx={{
+              fontFamily: "Bayon, sans-serif", 
+              fontSize: { xs: "12px", sm: "14px", md: "16px" },
+              padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+              borderRadius: "1rem",
+              boxShadow: 2,
+              background: '#FFFFFF'
+            }}
+          >
+            ACTUALIZAR DATOS
+          </Button>
+          
+          <CustomDialog 
+            open={openActualizarHis}
+            onClose={handleCloseActualizarHis}
+            title="Actualizar datos" 
+            onSubmit={handleSubmitActu} 
+          >
+            <TextField
+            id="numberActu"
+            label="Id"
             type="number"
             sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
             slotProps={{
@@ -362,112 +376,52 @@ function Medic() {
                 shrink: true,
               },
             }}
-          />
-          <TextField
-            label="Nombre del medicamento"
-            name="medicamentos"
-            //value={historialClinico.diagnosticos}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          <TextField
-            label="Especificaciones"
-            name="Especificaciones"
-            //value={historialClinico.padecimiento}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          
-        </CustomDialog>
-
-        <Button size = 'large' onClick={handleOpenActualizarHis} 
-          sx={{
-            fontFamily: "Bayon, sans-serif", 
-            fontSizeAdjust: "20%",
-            marginX: 2, 
-            height:"15%",
-            top: "400%",
-            left: "3%",
-            fontSize: { xs: "12px", sm: "14px", md: "16px" },
-            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
-            borderRadius: "1rem",
-            boxShadow: 2,
-            color: "#56210A",
-            backgroundColor: "#FFFAF4", 
-            "&:hover": {
-            backgroundColor: "#FFFAF4",
-            },
-          }}
-        >
-          ACTUALIZAR DATOS
-        </Button>
-        
-        <CustomDialog 
-          open={openActualizarHis}
-          onClose={handleCloseActualizarHis}
-          title="Actualizar datos" 
-          onSubmit={handleSubmitActu} 
-        >
-          <TextField
-          id="numberActu"
-          label="Id"
-          type="number"
-          sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-          }}
-          />
-          <TextField
-            label="Diagnósticos anteriores"
-            name="diagnosticos"
-            defaultValue={historialClinico.diagnosticos}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          <TextField
-            label="Padecimiento actual"
-            name="padecimiento"
-            defaultValue={historialClinico.padecimiento}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          <TextField
-            label="Tratamientos actuales"
-            name="tratamientos"
-            defaultValue={historialClinico.tratamientos}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-          <TextField
-            label="Historia clínica familiar"
-            name="historiaFamiliar"
-            defaultValue={historialClinico.historiaFamiliar}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
-        </CustomDialog>
+            />
+            <TextField
+              label="Diagnósticos anteriores"
+              name="diagnosticos"
+              defaultValue={historialClinico.diagnosticos}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+              label="Padecimiento actual"
+              name="padecimiento"
+              defaultValue={historialClinico.padecimiento}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+              label="Tratamientos actuales"
+              name="tratamientos"
+              defaultValue={historialClinico.tratamientos}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+            <TextField
+              label="Historia clínica familiar"
+              name="historiaFamiliar"
+              defaultValue={historialClinico.historiaFamiliar}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: '1rem' }}
+            />
+          </CustomDialog>
       </Box>
     </Box>
+    
+  </Box>
   );
 }
 
