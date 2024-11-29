@@ -6,7 +6,7 @@ import '@fontsource/bayon';
 
 function Medic() {
   const navegar = useNavigate();
-  const usuario = "Ramiro (La Cabra)";
+  const usuario = "Ramiro (El pinche friote)";
 
   const [openCrearExp, setOpenCrearExp] = useState(false);
   const [openConsultarHis, setOpenConsultarHis] = useState(false);
