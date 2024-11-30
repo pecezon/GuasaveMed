@@ -1,4 +1,4 @@
-export const getCitaPorPaciente = async (id) => {
+export const getCitasPorPaciente = async (id) => {
   try {
     const res = await fetch(`http://localhost:8080/api/cita/paciente/${id}`, {
       method: "GET",
@@ -47,19 +47,35 @@ export const crearCita = async (citaNueva) => {
   }
 };
 
-
 //no estoy segura de esto
-export const borrarCita = async (id) =>{
+export const borrarCita = async (id) => {
   try {
-    const res = await fetch(`http://localhost:8080/api/cita/${id}`,{
+    const res = await fetch(`http://localhost:8080/api/cita/${id}`, {
       method: "DELETE",
       headers: {
-        'Content-type': 'application/json',
+        "Content-type": "application/json",
       },
     });
 
     return await res.json();
-  }catch (err){
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editarCita = async (id, cita) => {
+  try {
+    const res = await fetch(`http://localhost:8080/api/cita/${id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cita),
+    });
+
+    return await res.json();
+  } catch (err) {
     console.log(err);
   }
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 
 // Importar componentes de Material-UI
 import { Box, Typography } from "@mui/material";
@@ -11,14 +12,27 @@ import CustomTablePast from "../../components/CustomTablePast";
 // Importar hook para obtener la ubicacion actual
 import { useLocation } from "react-router-dom";
 
-function Cancel() {
+//Importar funciones de citas
+import { getCitasPorPaciente } from "../../functions/cita";
 
+function Cancel() {
   //Conectar con la pagina padre que nos redirige a esta pagina
   const location = useLocation();
   const { paciente } = location.state || {};
 
   //Paciente actual
   const pacient = paciente || "Paciente no seleccionado";
+
+  //Obtener citas del paciente
+  const [citas, setCitas] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useState(() => {
+    getCitasPorPaciente(pacient.id).then((data) => {
+      setCitas(data);
+      setLoading(false);
+    });
+  }, []);
 
   return (
     <Box
@@ -33,7 +47,6 @@ function Cancel() {
       }}
     >
       <Box sx={{ alignContent: "center", alignItems: "center" }}>
-
         {/* Titulo */}
         <Typography
           sx={{
@@ -86,7 +99,7 @@ function Cancel() {
           </Typography>
 
           {/* Tabla personalizada */}
-          <CustomTable pacientes={[paciente]}/>
+          <CustomTable pacientes={[paciente]} />
         </Box>
 
         <Box
@@ -105,7 +118,11 @@ function Cancel() {
           </Typography>
 
           {/* Tabla personalizada para citas programadas */}
-          <CustomTableAppoint />
+          {loading ? (
+            <Typography>Cargando...</Typography>
+          ) : (
+            <CustomTableAppoint citas={citas} />
+          )}
         </Box>
 
         <Box

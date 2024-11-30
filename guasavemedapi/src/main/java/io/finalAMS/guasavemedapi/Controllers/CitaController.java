@@ -2,7 +2,6 @@ package io.finalAMS.guasavemedapi.Controllers;
 
 import io.finalAMS.guasavemedapi.Models.Cita;
 import io.finalAMS.guasavemedapi.Services.CitaService;
-import io.finalAMS.guasavemedapi.Services.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +43,15 @@ public class CitaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(citas);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cita> modificarCita(@PathVariable Long id, @RequestBody Cita citaActualizada) {
+        try {
+            Cita cita = citaService.modificarCita(id, citaActualizada);
+            return ResponseEntity.ok(cita);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

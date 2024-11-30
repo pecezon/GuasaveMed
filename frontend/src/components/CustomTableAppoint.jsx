@@ -1,89 +1,138 @@
-import React from 'react';
-import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper, Button, Box} from '@mui/material';
-import colors from '../utils/colors';
+import React from "react";
+import { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Box,
+  Typography,
+} from "@mui/material";
+import colors from "../utils/colors";
+import EditarCitaDialog from "./EditarCitaDialog";
 
-function CustomTableAppoint() {
-  
-  const rows = [
-    { medic: 'Martin Fernando Cardenas De Dios', date: "4/12/24", reason: "Gripe Viral"},
-    { medic: 'Regina Ibarra Bustamante' , date: "13/12/24", reason: "Diarrea"},
-    
-  ];
+function CustomTableAppoint({ citas }) {
+  //Open dialog editar cita
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = (row) => {
+    setCitaActual(row);
+    console.log(row);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  //Cita a editar
+  const [citaActual, setCitaActual] = useState({});
 
   return (
-    <Box sx={{
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      flexWrap: 'wrap',
-      width: '100%',
-      height: '100%',
-    }}>
-        <TableContainer component={Paper}>
-        <Table sx={{borderColor: 'black', border: '2px solid black'}}>
-          
+    <Box
+      sx={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "wrap",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <TableContainer component={Paper}>
+        <Table sx={{ borderColor: "black", border: "2px solid black" }}>
           {/* Head */}
           <TableHead>
             <TableRow>
-              <TableCell sx={{width: '25%', fontSize: '1.1rem', fontWeight:'bold'}}>Medico</TableCell>
-              <TableCell sx={{width: '25%', fontSize: '1.1rem', fontWeight:'bold'}}>Fecha</TableCell>
-              <TableCell sx={{width: '25%', fontSize: '1.1rem', fontWeight:'bold'}}>Asunto</TableCell>
-              <TableCell sx = {{width: '25%'}}></TableCell>
+              <TableCell
+                sx={{ width: "25%", fontSize: "1.1rem", fontWeight: "bold" }}
+              >
+                Medico
+              </TableCell>
+              <TableCell
+                sx={{ width: "25%", fontSize: "1.1rem", fontWeight: "bold" }}
+              >
+                Fecha
+              </TableCell>
+              <TableCell
+                sx={{ width: "25%", fontSize: "1.1rem", fontWeight: "bold" }}
+              >
+                Consultorio
+              </TableCell>
+              <TableCell sx={{ width: "25%" }}></TableCell>
             </TableRow>
           </TableHead>
 
           {/* Body */}
           <TableBody>
-            {rows.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>{row.medic}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.reason}</TableCell>
-                <TableCell>
-                  <Box sx={{ 
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    flexDirection: 'row',
-                    gap: '0.15rem',
-                    width: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
+            {citas ? (
+              citas.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>
+                    {row.empleado ? row.empleado.nombre : "No disponible"}
+                  </TableCell>
+                  <TableCell>{row.fecha || "No disponible"}</TableCell>
+                  <TableCell>{row.consultorio || "No disponible"}</TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        flexDirection: "row",
+                        gap: "0.15rem",
+                        width: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {/* Actualizar cita boton y dialog */}
                       <Button
-                      variant="contained"
-                      color = "primary"
-                      sx={{ marginRight: 1 }}
-                      onClick={() => alert(`Editando cita con ${row.medic}`)}
-                    >
-                      Editar
-                    </Button>
+                        variant="contained"
+                        color="primary"
+                        sx={{ marginRight: 1 }}
+                        onClick={() => handleClickOpen(row)}
+                      >
+                        Editar
+                      </Button>
+                      <EditarCitaDialog
+                        open={open}
+                        onClose={handleClose}
+                        cita={citaActual}
+                      ></EditarCitaDialog>
 
-                    <Button
-                      variant="contained"
-                      color="success"
-                      sx={{ marginRight: 1 }}
-                      onClick={() => alert(`Confirmando cita con ${row.medic}`)}
-                    >
-                      Confirmar
-                    </Button>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{ marginRight: 1 }}
+                        onClick={() =>
+                          alert(`Confirmando cita con ${row.empleado.nombre}`)
+                        }
+                      >
+                        Confirmar
+                      </Button>
 
-                    <Button
-                      variant="outlined"
-                      color= "error"
-                      onClick={() => alert(`Eliminando cita con ${row.medic}`)}
-                    >
-                      Eliminar
-                    </Button>
-                  </Box>
-                
-                </TableCell>
-              </TableRow>
-            ))}
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={() =>
+                          alert(`Eliminando cita con ${row.empleado.nombre}`)
+                        }
+                      >
+                        Eliminar
+                      </Button>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <Typography>No hay citas programadas</Typography>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
     </Box>
-    
   );
 }
 
