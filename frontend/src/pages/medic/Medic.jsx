@@ -97,16 +97,20 @@ function Medic() {
     </Box>   
 
     <Box sx = {{
-      marginTop: { xs: "90%", sm: "50%", md: "10%" },
-      backgroundColor:'#E6F2FC',
-      width: '100%',
+      marginTop: { xs: "30%", sm: "20%", md: "7%" },
+      width: '80%',
       height: 'auto',
       justifyContent: 'center',
       display: 'flex',
       alignSelf: 'center',
       paddingTop: {xs: '1rem', sm: '2rem', md: '4rem'},
       paddingBottom: {xs: '1rem', sm: '2rem', md: '4rem'},
-      borderRadius: 10
+      paddingLeft: {xs: '1rem', sm: '2rem', md: '4rem'},
+      paddingRight: {xs: '1rem', sm: '2rem', md: '4rem'},
+      borderRadius: 16,
+      backgroundColor:'#E6F2FC',
+      boxShadow: 'inset 0px 4px 47.8px rgba(39,91,158,0.25)',
+      zIndex: 2,
     }}>
       <Box sx={{
           display: "flex",
@@ -115,12 +119,12 @@ function Medic() {
           alignItems: "center",
           justifyContent: "space-evenly",
           gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
-          width: { xs: "90%", sm: "70%", md: "60%" },
+          width: '100%',
         }}
       >
         
           <Button
-          variant="outlined" // Use "contained" to enable background color fill
+          variant="contained" // Use "contained" to enable background color fill
           size="large"
           onClick={handleOpenCrearExp}
           sx={{
@@ -129,7 +133,10 @@ function Medic() {
             padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
             borderRadius: "1rem",
             boxShadow: 2,
-            background: '#FFFFFF'
+            color: '#56210A',
+            backgroundColor: '#FFFAF4',
+            "&:hover": {
+              backgroundColor: '#FFBC58'},
           }}
         >
           CREAR EXPEDIENTE
@@ -201,7 +208,10 @@ function Medic() {
               padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
               borderRadius: "1rem",
               boxShadow: 2,
-              background: '#FFFFFF'
+              color: '#56210A',
+              backgroundColor: '#FFFAF4',
+              "&:hover": {
+                backgroundColor: '#FFBC58'},
             }}
           >
             CONSULTAR HISTORIAL
@@ -301,7 +311,10 @@ function Medic() {
               padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
               borderRadius: "1rem",
               boxShadow: 2,
-              background: '#FFFFFF'
+              color: '#56210A',
+              backgroundColor: '#FFFAF4',
+              "&:hover": {
+                backgroundColor: '#FFBC58'},
             }}
           >
             HACER RECETA
@@ -354,7 +367,10 @@ function Medic() {
               padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
               borderRadius: "1rem",
               boxShadow: 2,
-              background: '#FFFFFF'
+              color: '#56210A',
+              backgroundColor: '#FFFAF4',
+              "&:hover": {
+                backgroundColor: '#FFBC58'},
             }}
           >
             ACTUALIZAR DATOS
