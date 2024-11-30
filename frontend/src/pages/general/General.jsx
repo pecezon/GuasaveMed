@@ -206,6 +206,16 @@ function General() {
       }}
     >
       <Box>
+        <Box
+          component="img"
+          src="/images/WELCOME.png"
+          alt="Welcome Image"
+          sx={{
+            alignItems: "center",
+            width: "90%",
+          }}
+        ></Box>
+
         <Typography
           sx={{
             fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
@@ -221,235 +231,267 @@ function General() {
             marginTop: "2rem",
           }}
         >
-          HOLA {user}
+          {user}
         </Typography>
       </Box>
 
       <Box
         sx={{
+          marginTop: { xs: "30%", sm: "20%", md: "7%" },
+          width: "80%",
+          height: "auto",
+          justifyContent: "center",
           display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
-          marginTop: { xs: "90%", sm: "50%", md: "10%" },
-          width: { xs: "90%", sm: "70%", md: "60%" },
+          alignSelf: "center",
+          paddingTop: { xs: "1rem", sm: "2rem", md: "4rem" },
+          paddingBottom: { xs: "1rem", sm: "2rem", md: "4rem" },
+          paddingLeft: { xs: "1rem", sm: "2rem", md: "4rem" },
+          paddingRight: { xs: "1rem", sm: "2rem", md: "4rem" },
+          borderRadius: 16,
+          backgroundColor: "#E6F2FC",
+          boxShadow: "inset 0px 4px 47.8px rgba(39,91,158,0.25)",
+          zIndex: 2,
         }}
       >
-        <Button
-          variant="outlined"
-          size="large"
-          onClick={handleOpenAgendar}
+        <Box
           sx={{
-            fontSize: { xs: "12px", sm: "14px", md: "16px" },
-            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
-            borderRadius: "1rem",
-            boxShadow: 2,
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
+            width: "100%",
           }}
         >
-          AGENDAR CITA
-        </Button>
-
-        {/*Dialog to create pop ups */}
-        <CustomDialog
-          open={openAgendar}
-          onClose={handleCloseAgendar}
-          title={"FORMULARIO AGENDAR CITA"}
-          onSubmit={() => handleSubmit("agendar")}
-        >
-          <TextField
-            autoFocus
-            margin="dense"
-            name="name"
-            label="Nombre"
-            type="text"
-            fullWidth
+          <Button
             variant="outlined"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="age"
-            label="Edad"
-            type="number"
-            fullWidth
-            variant="outlined"
-            value={formData.age}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="phone"
-            label="Teléfono"
-            type="tel"
-            fullWidth
-            variant="outlined"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-          <Select
-            name="medic"
-            value={formData.medic}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, medic: e.target.value }))
-            }
-            fullWidth
-            displayEmpty
+            size="large"
+            onClick={handleOpenAgendar}
+            sx={{
+              fontFamily: "Bayon, sans-serif",
+              fontSize: { xs: "12px", sm: "14px", md: "16px" },
+              padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+              borderRadius: "1rem",
+              boxShadow: 2,
+              color: "#56210A",
+              backgroundColor: "#FFFAF4",
+              "&:hover": {
+                backgroundColor: "#FFBC58",
+              },
+            }}
           >
-            <MenuItem value="" disabled>
-              Seleccione un médico
-            </MenuItem>
-            {doctores.map((medic) => (
-              <MenuItem key={medic.id} value={medic.id}>
-                {medic.nombre}
-              </MenuItem>
-            ))}
-          </Select>
+            AGENDAR CITA
+          </Button>
 
-          {/* Manejo de fecha y horas*/}
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              sx={{ marginTop: 2 }}
-              label="Fecha y Hora"
-              value={formData.date}
-              onChange={(newValue) =>
-                setFormData((prev) => ({ ...prev, date: newValue }))
-              }
-              renderInput={(params) => <TextField {...params} fullWidth />}
+          {/*Dialog to create pop ups */}
+          <CustomDialog
+            open={openAgendar}
+            onClose={handleCloseAgendar}
+            title={"FORMULARIO AGENDAR CITA"}
+            onSubmit={() => handleSubmit("agendar")}
+          >
+            <TextField
+              autoFocus
+              margin="dense"
+              name="name"
+              label="Nombre"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={formData.name}
+              onChange={handleChange}
             />
-          </LocalizationProvider>
-        </CustomDialog>
-
-        {/* Boton Pacientes */}
-        <Button
-          variant="outlined"
-          size="large"
-          onClick={handleOpenPaciente}
-          sx={{
-            fontSize: { xs: "12px", sm: "14px", md: "16px" },
-            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
-            borderRadius: "1rem",
-            boxShadow: 2,
-          }}
-        >
-          PORTAL PACIENTES
-        </Button>
-
-        {/* Dialog de portal pacientes */}
-        <CustomDialog
-          open={openPaciente}
-          onClose={handleClosePaciente}
-          title={"BUSCAR PACIENTE"}
-          onSubmit={() => handleSubmit("paciente")}
-        >
-          {/* Buscador */}
-          <TextField
-            label="Buscar"
-            variant="outlined"
-            fullWidth
-            value={searchTerm}
-            onChange={handleSearch}
-            sx={{ marginBottom: 2, marginTop: 2 }}
-          />
-
-          {/* Paciente seleccionado */}
-          <Typography>
-            {selectedPaciente && (
-              <p>Paciente seleccionado: {selectedPaciente}</p>
-            )}
-          </Typography>
-
-          {/* Lista de pacientes */}
-          <List>
-            {pacientes.length > 0 ? (
-              pacientes.map((paciente) => (
-                <ListItem
-                  key={paciente.id}
-                  sx={{ textAlign: "left", cursor: "pointer" }}
-                  onClick={() => {
-                    setSelectedPaciente(paciente);
-                    navigate("/cancelar", { state: { paciente: paciente } });
-                  }}
-                >
-                  <ListItemText primary={paciente.nombre} />
-                </ListItem>
-              ))
-            ) : (
-              <ListItem>
-                <ListItemText primary="No se encontraron resultados" />
-              </ListItem>
-            )}
-          </List>
-        </CustomDialog>
-
-        <Button
-          variant="outlined"
-          size="large"
-          onClick={handleOpenRegistro}
-          sx={{
-            fontSize: { xs: "12px", sm: "14px", md: "16px" },
-            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
-            borderRadius: "1rem",
-            boxShadow: 2,
-          }}
-        >
-          REGISTRO DE EMERGENCIA
-        </Button>
-
-        <CustomDialog
-          open={openRegistro}
-          onClose={handleCloseRegistro}
-          title={"FORMULARIO REGISTRO DE EMERGENCIA"}
-          onSubmit={() => handleSubmit("emergencia")}
-        >
-          <TextField
-            autoFocus
-            margin="dense"
-            name="name"
-            label="Nombre"
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={formData.name}
-            onChange={handleChange}
-          />
-
-          <TextField
-            margin="dense"
-            name="age"
-            label="Edad"
-            type="number"
-            fullWidth
-            variant="outlined"
-            value={formData.age}
-            onChange={handleChange}
-          />
-
-          <Select
-            name="reason"
-            value={formData.reason}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, reason: e.target.value }))
-            }
-            fullWidth
-            displayEmpty
-          >
-            <MenuItem value="" disabled>
-              Razon de ingreso
-            </MenuItem>
-            {reasons.map((reason) => (
-              <MenuItem key={reason.value} value={reason.value}>
-                {reason.label}
+            <TextField
+              margin="dense"
+              name="age"
+              label="Edad"
+              type="number"
+              fullWidth
+              variant="outlined"
+              value={formData.age}
+              onChange={handleChange}
+            />
+            <TextField
+              margin="dense"
+              name="phone"
+              label="Teléfono"
+              type="tel"
+              fullWidth
+              variant="outlined"
+              value={formData.phone}
+              onChange={handleChange}
+            />
+            <Select
+              name="medic"
+              value={formData.medic}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, medic: e.target.value }))
+              }
+              fullWidth
+              displayEmpty
+            >
+              <MenuItem value="" disabled>
+                Seleccione un médico
               </MenuItem>
-            ))}
-          </Select>
-        </CustomDialog>
+              {doctores.map((medic) => (
+                <MenuItem key={medic.id} value={medic.id}>
+                  {medic.nombre}
+                </MenuItem>
+              ))}
+            </Select>
 
-        {/* <Box>
-          <Cancel/>
-        </Box> */}
+            {/* Manejo de fecha y horas*/}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                sx={{ marginTop: 2 }}
+                label="Fecha y Hora"
+                value={formData.date}
+                onChange={(newValue) =>
+                  setFormData((prev) => ({ ...prev, date: newValue }))
+                }
+                renderInput={(params) => <TextField {...params} fullWidth />}
+              />
+            </LocalizationProvider>
+          </CustomDialog>
+
+          {/* Boton Pacientes */}
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={handleOpenPaciente}
+            sx={{
+              fontFamily: "Bayon, sans-serif",
+              fontSize: { xs: "12px", sm: "14px", md: "16px" },
+              padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+              borderRadius: "1rem",
+              boxShadow: 2,
+              color: "#56210A",
+              backgroundColor: "#FFFAF4",
+              "&:hover": {
+                backgroundColor: "#FFBC58",
+              },
+            }}
+          >
+            PORTAL PACIENTES
+          </Button>
+
+          {/* Dialog de portal pacientes */}
+          <CustomDialog
+            open={openPaciente}
+            onClose={handleClosePaciente}
+            title={"BUSCAR PACIENTE"}
+            onSubmit={() => handleSubmit("paciente")}
+          >
+            {/* Buscador */}
+            <TextField
+              label="Buscar"
+              variant="outlined"
+              fullWidth
+              value={searchTerm}
+              onChange={handleSearch}
+              sx={{ marginBottom: 2, marginTop: 2 }}
+            />
+
+            {/* Paciente seleccionado */}
+            <Typography>
+              {selectedPaciente && (
+                <p>Paciente seleccionado: {selectedPaciente}</p>
+              )}
+            </Typography>
+
+            {/* Lista de pacientes */}
+            <List>
+              {pacientes.length > 0 ? (
+                pacientes.map((paciente) => (
+                  <ListItem
+                    key={paciente.id}
+                    sx={{ textAlign: "left", cursor: "pointer" }}
+                    onClick={() => {
+                      setSelectedPaciente(paciente);
+                      navigate("/cancelar", { state: { paciente: paciente } });
+                    }}
+                  >
+                    <ListItemText primary={paciente.nombre} />
+                  </ListItem>
+                ))
+              ) : (
+                <ListItem>
+                  <ListItemText primary="No se encontraron resultados" />
+                </ListItem>
+              )}
+            </List>
+          </CustomDialog>
+
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={handleOpenRegistro}
+            sx={{
+              fontFamily: "Bayon, sans-serif",
+              fontSize: { xs: "12px", sm: "14px", md: "16px" },
+              padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+              borderRadius: "1rem",
+              boxShadow: 2,
+              color: "#56210A",
+              backgroundColor: "#FFFAF4",
+              "&:hover": {
+                backgroundColor: "#FFBC58",
+              },
+            }}
+          >
+            REGISTRO DE EMERGENCIA
+          </Button>
+
+          <CustomDialog
+            open={openRegistro}
+            onClose={handleCloseRegistro}
+            title={"FORMULARIO REGISTRO DE EMERGENCIA"}
+            onSubmit={() => handleSubmit("emergencia")}
+          >
+            <TextField
+              autoFocus
+              margin="dense"
+              name="name"
+              label="Nombre"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={formData.name}
+              onChange={handleChange}
+            />
+
+            <TextField
+              margin="dense"
+              name="age"
+              label="Edad"
+              type="number"
+              fullWidth
+              variant="outlined"
+              value={formData.age}
+              onChange={handleChange}
+            />
+
+            <Select
+              name="reason"
+              value={formData.reason}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, reason: e.target.value }))
+              }
+              fullWidth
+              displayEmpty
+            >
+              <MenuItem value="" disabled>
+                Razon de ingreso
+              </MenuItem>
+              {reasons.map((reason) => (
+                <MenuItem key={reason.value} value={reason.value}>
+                  {reason.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </CustomDialog>
+        </Box>
       </Box>
     </Box>
   );

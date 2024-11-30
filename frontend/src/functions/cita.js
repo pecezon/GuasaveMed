@@ -46,3 +46,20 @@ export const crearCita = async (citaNueva) => {
     console.log(err);
   }
 };
+
+
+//no estoy segura de esto
+export const borrarCita = async (id) =>{
+  try {
+    const res = await fetch(`http://localhost:8080/api/cita/${id}`,{
+      method: "DELETE",
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
+
+    return await res.json();
+  }catch (err){
+    console.log(err);
+  }
+};
