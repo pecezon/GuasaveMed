@@ -3,7 +3,46 @@ import { Box } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { login } from '../../functions/login';
+
 function Login() {
+
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await login({ usuario:user, password:password });
+
+      //Desestructuramos la respuesta
+      const { tipo } = response;
+
+      console.log(tipo);
+      console.log(response);
+
+      //Si es recepcionista general
+      if (tipo === "rg") navigate("/general");
+
+      //Si es recepcionista personal
+      else if (tipo === "rp") navigate("/personal", { state: { id: response.id } });
+
+      //Si es doctor
+      else if (tipo === "doctor") navigate("/doctor");
+
+      //Si es un intruso
+      else alert("Quien sos?");
+    } catch (error) {
+      //Si hay un error (malas credenciales)
+      alert("Ponga bien su contra o usuario wei");
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -60,6 +99,9 @@ function Login() {
           label="Usuario"
           color="56210A"
           variant="outlined"
+          type='text'
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
           focused
           sx={{
             width: "170%",
@@ -93,6 +135,9 @@ function Login() {
           label="Contrasena"
           color="56210A"
           variant="outlined"
+          type='password'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           focused
           sx={{
             width: "170%",
@@ -134,6 +179,7 @@ function Login() {
             fontWeight: "bold",
             fontSize: "120%",
           }}
+          onClick={handleLogin}
         >
           Iniciar Sesion
         </Button>

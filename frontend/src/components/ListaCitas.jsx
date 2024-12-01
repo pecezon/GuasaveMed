@@ -53,12 +53,11 @@ const ListaCitas = ({ citas }) => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Id</TableCell>
+            <TableCell>Id Cita</TableCell>
             <TableCell align="right">Paciente</TableCell>
             <TableCell align="right">Fecha</TableCell>
             <TableCell align="right">Razon</TableCell>
-            <TableCell align="right">Registrar</TableCell>
-            <TableCell align="right">Editar</TableCell>
+            <TableCell align="right">Registrar/Editar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -73,11 +72,6 @@ const ListaCitas = ({ citas }) => {
               <TableCell align="right">{row.paciente.nombre}</TableCell>
               <TableCell align="right">{row.fecha}</TableCell>
               <TableCell align="right">{row.razonIngreso}</TableCell>
-              <TableCell align="right">
-                <Button variant="contained" color="primary">
-                  Registrar
-                </Button>
-              </TableCell>
               <TableCell align="right">
                 <Button
                   variant="contained"
