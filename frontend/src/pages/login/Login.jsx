@@ -1,183 +1,119 @@
-import React from 'react'; 
-import { Box } from "@mui/material";
+import React, { useState } from 'react'; 
+import { Box, Button, IconButton, InputAdornment, Typography } from "@mui/material";
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
+  const intialFormData = {
+    user: "",
+    password: "",
+  };
+
+  const [formData, setFormData] = useState(intialFormData);
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value}));
+  }
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleSubmit = () => navigate("/general");
+
   return (
     <Box
       sx={{
         display: "flex",
+        flexDirection: "column",
         width: "100%",
-        height: "100vh",
-        position: "relative",
-        overflow: "hidden",
-        justifyContent: "center",
+        height: "100%",
+        marginTop: { xs: "5vh", sm: "5vh", md: "5vh" },
         alignItems: "center",
+        textAlign: "center",
+        padding: { xs: "0rem", sm: "0.5rem" },
       }}
     >
-      <Box
-        sx={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          backgroundImage: "url('/images/backgroundDoodles.png')",
-          backgroundSize: "100%",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          opacity: 0.12,
-          zIndex: 1,
-        }}
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: -700,
-          left: -70,
-          width: "110%",
-          height: "140%",
-          background: "linear-gradient(180deg, rgba(222, 239, 255), #E6F2FF)",
-          borderTopLeftRadius: "100%",
-          borderTopRightRadius: "100%",
-          zIndex: 2,
-        }}
-      />
+      
+      <Box>
+        <Box
+          component="img"
+          src="/images/WELCOME.png"
+          alt="Welcome Image"
+          sx={{
+            alignItems: "center",
+            width: "90%",
+          }}
+        />
+      </Box>
 
-      <Box
-        component="form"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 4,
-          zIndex: 3,
-          marginTop: "15%", 
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
+      <Box sx={{
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "space-evenly",
+        gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
+        width: {xs: "80%", sm: "50%", md: "30%"},
+        marginTop: {xs: "30%", sm: "20%", md: "7%"}
+      }}>
+
+        <TextField 
+          autoFocus
+          margin="dense"
+          name="user"
           label="Usuario"
-          color="56210A"
+          type="text"
+          fullWidth
           variant="outlined"
-          focused
-          sx={{
-            width: "170%",
-            "& .MuiInputBase-root": {
-              backgroundColor: "#FFFAF4", 
-              borderRadius: "5",
-            },
-            "& .MuiInputBase-input": {
-              fontSize: "120%", 
-              color: "#56210A",
-            },
-            "& .MuiInputLabel-root": {
-              fontSize: "120%",
-              color: "#56210A", 
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#56210A", 
-              },
-              "&:hover fieldset": {
-                borderColor: "#56210A", 
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#56210A", 
-              },
-            },
+          value={formData.user}
+          onChange={handleChange}
+        />
+
+        <TextField 
+          autoFocus
+          margin="dense"
+          name="password"
+          label="Contraseña"
+          type={showPassword ? "text" : "password"}
+          fullWidth
+          variant="outlined"
+          value={formData.password}
+          onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton onClick={handleClickShowPassword} edge="end">
+                  {showPassword ? <VisibilityOff/> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            )
           }}
         />
 
-        <TextField
-          label="Contrasena"
-          color="56210A"
-          variant="outlined"
-          focused
-          sx={{
-            width: "170%",
-            "& .MuiInputBase-root": {
-              backgroundColor: "#FFFAF4", 
-              borderRadius: "5",
-            },
-            "& .MuiInputBase-input": {
-              fontSize: "120%", 
-              color: "#56210A",
-            },
-            "& .MuiInputLabel-root": {
-              fontSize: "120%",
-              color: "#56210A", 
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#56210A", 
-              },
-              "&:hover fieldset": {
-                borderColor: "#56210A", 
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#56210A", 
-              },
-            },
-          }}
-        />
         <Button
-          variant="contained"
+          variant='outlined'
+          size= "large"
+          onClick={handleSubmit}
           sx={{
-            label: "Iniciar sesion",
-            width: "170%",
-            height: "200%",
-            background: "linear-gradient(90deg, #A3D79F, #7CC572)",
-            color: "white",
-            borderRadius: "7%",
-            textTransform: "none",
-            fontWeight: "bold",
-            fontSize: "120%",
+            fontFamily: "Bayon, sans-serif",
+              fontSize: { xs: "12px", sm: "14px", md: "16px" },
+              padding: { xs: "1rem 0.5rem", sm: "1rem 1rem", md: "1rem 2rem" },
+              borderRadius: "1rem",
+              boxShadow: 2,
+              color: "#56210A",
+              backgroundColor: "#FFFAF4",
+              "&:hover": {
+                backgroundColor: "#FFBC58",
+              },
           }}
         >
-          Iniciar Sesion
+          INICIAR SESION
         </Button>
+
       </Box>
-      <Box
-        component="img"
-        src="/images/WELCOME.png"
-        alt="Imagen de bienvenida"
-        sx={{
-          position: "absolute",
-          top: "1%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "50%",
-          height: "auto",
-          zIndex: 3,
-        }}
-      />
-      <Box
-        component="img"
-        src="/images/ninaGlobos.png"
-        alt="Niña con globos"
-        sx={{
-          position: "absolute",
-          top: "11%",
-          left: "7%",
-          width: "15%",
-          height: "auto",
-          zIndex: 2,
-        }}
-      />
-      <Box
-        component="img"
-        src="/images/blocks.png"
-        alt="Bloques ABC"
-        sx={{
-          position: "absolute",
-          bottom: "4%",
-          right: "7%",
-          width: "20%",
-          height: "auto",
-          zIndex: 2,
-        }}
-      />
     </Box>
   );
 }
