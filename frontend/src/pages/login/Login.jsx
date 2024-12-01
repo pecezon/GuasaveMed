@@ -22,7 +22,8 @@ function Login() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleSubmit = () => navigate("/general");
-
+  const image = "url('images/blocks.png)";
+  
   return (
     <Box
       sx={{
@@ -57,7 +58,7 @@ function Login() {
         justifyContent: "space-evenly",
         gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
         width: {xs: "80%", sm: "50%", md: "30%"},
-        marginTop: {xs: "30%", sm: "20%", md: "7%"}
+        
       }}>
 
         <TextField 
@@ -70,6 +71,11 @@ function Login() {
           variant="outlined"
           value={formData.user}
           onChange={handleChange}
+          sx={{
+            marginTop: {xs: "30%", sm: "20%", md: "40%"},
+            backgroundColor: '#FFFAF4',
+            boxShadow: 2,
+          }}
         />
 
         <TextField 
@@ -90,6 +96,10 @@ function Login() {
                 </IconButton>
               </InputAdornment>
             )
+          }}
+          sx = {{
+            backgroundColor: '#FFFAF4',
+            boxShadow: 2,
           }}
         />
 
@@ -113,6 +123,66 @@ function Login() {
           INICIAR SESION
         </Button>
 
+        <Box 
+          sx={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            backgroundImage: "url('/images/backgroundDoodles.png')",
+            backgroundSize: "100%",
+            backgroundPosition: "center",
+            backgroundRepeat: "repeat",
+            opacity: 0.12,
+            zIndex: -2,
+            pointerEvents: "none",
+          }}
+        />
+
+        <Box
+         sx={{
+            position: "absolute",
+            bottom: "00%",
+            alignSelf: 'center',
+            width: "100%",
+            height: "60%",
+            background: "linear-gradient(180deg, rgba(222, 239, 255), #E6F2FF)",
+            borderTopLeftRadius: "60%",
+            borderTopRightRadius: "60%",
+            zIndex: -1,
+            pointerEvents: "none",
+          }}
+        />
+
+        <Box
+        sx={{
+          position: "absolute",
+          backgroundImage: "url('/images/ninaGlobos.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'contain',
+          alignSelf: 'baseline',
+          width: 400,
+          height: 400,
+          marginTop: "-10%",
+          marginLeft: "-60%",
+          zIndex: -1,
+          pointerEvents: 'none',
+        }}
+        />
+
+        <Box
+          sx={{
+            position: "absolute",
+            backgroundImage: "url('/images/blocks.png')",
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'contain',
+            width: 400,
+            height: 400,
+            marginTop: "25%",
+            marginLeft: "60%",
+            zIndex: -1,
+            pointerEvents: 'none',
+          }}
+        />
       </Box>
     </Box>
   );
