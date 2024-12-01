@@ -1,9 +1,7 @@
-import React from 'react'; 
-import { Box } from "@mui/material";
+import React, { useState } from 'react'; 
+import { Box, Button, IconButton, InputAdornment, Typography } from "@mui/material";
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { login } from '../../functions/login';
@@ -47,55 +45,43 @@ function Login() {
     <Box
       sx={{
         display: "flex",
+        flexDirection: "column",
         width: "100%",
-        height: "100vh",
-        position: "relative",
-        overflow: "hidden",
-        justifyContent: "center",
+        height: "100%",
+        marginTop: { xs: "5vh", sm: "5vh", md: "5vh" },
         alignItems: "center",
+        textAlign: "center",
+        padding: { xs: "0rem", sm: "0.5rem" },
       }}
     >
-      <Box
-        sx={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          backgroundImage: "url('/images/backgroundDoodles.png')",
-          backgroundSize: "100%",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          opacity: 0.12,
-          zIndex: 1,
-        }}
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: -700,
-          left: -70,
-          width: "110%",
-          height: "140%",
-          background: "linear-gradient(180deg, rgba(222, 239, 255), #E6F2FF)",
-          borderTopLeftRadius: "100%",
-          borderTopRightRadius: "100%",
-          zIndex: 2,
-        }}
-      />
+      
+      <Box>
+        <Box
+          component="img"
+          src="/images/WELCOME.png"
+          alt="Welcome Image"
+          sx={{
+            alignItems: "center",
+            width: "90%",
+          }}
+        />
+      </Box>
 
-      <Box
-        component="form"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 4,
-          zIndex: 3,
-          marginTop: "15%", 
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
+      <Box sx={{
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "space-evenly",
+        gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
+        width: {xs: "80%", sm: "50%", md: "30%"},
+        
+      }}>
+
+        <TextField 
+          autoFocus
+          margin="dense"
+          name="user"
           label="Usuario"
           color="56210A"
           variant="outlined"
@@ -204,27 +190,34 @@ function Login() {
         alt="Niña con globos"
         sx={{
           position: "absolute",
-          top: "11%",
-          left: "7%",
-          width: "15%",
-          height: "auto",
-          zIndex: 2,
+          backgroundImage: "url('/images/ninaGlobos.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'contain',
+          alignSelf: 'baseline',
+          width: 400,
+          height: 400,
+          marginTop: "-10%",
+          marginLeft: "-60%",
+          zIndex: -1,
+          pointerEvents: 'none',
         }}
-      />
-      <Box
-        component="img"
-        src="/images/blocks.png"
-        alt="Bloques ABC"
-        sx={{
-          position: "absolute",
-          bottom: "4%",
-          right: "7%",
-          width: "20%",
-          height: "auto",
-          zIndex: 2,
-        }}
-      />
-    </Box>
+        />
+
+        <Box
+          sx={{
+            position: "absolute",
+            backgroundImage: "url('/images/blocks.png')",
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'contain',
+            width: 400,
+            height: 400,
+            marginTop: "25%",
+            marginLeft: "60%",
+            zIndex: -1,
+            pointerEvents: 'none',
+          }}
+        />
+      </Box>
   );
 }
 
