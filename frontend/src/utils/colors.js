@@ -1,5 +1,5 @@
 const colors = {
-    nigga:'#000000'
+  lightgray: "#d9d7d7",
 };
 
 export default colors;

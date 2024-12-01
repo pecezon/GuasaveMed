@@ -43,4 +43,8 @@ public class CitaService {
     public List<Cita> obtenerCitasPorPaciente(Long citaId) {
         return citaRepository.findByPacienteId(citaId);
     }
+
+    public List<Cita> obtenerCitasPorEmpleado(Long empleadoId) {
+        return citaRepository.findByEmpleadoId(empleadoId);
+    }
 }

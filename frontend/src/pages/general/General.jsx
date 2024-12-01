@@ -3,15 +3,13 @@ import React, { useEffect, useState } from "react";
 //Imports de material ui
 import {
   Box,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   List,
   ListItem,
   ListItemText,
   MenuItem,
   Select,
   Typography,
+  Checkbox,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -53,12 +51,21 @@ function General() {
 
   //Que pasa cuando se abre el dialogo del portal pacientes
   const handleOpenPaciente = () => {
+    //Cerrar si no ha cargado
+    if (pacientesLoading) {
+      return;
+    }
+
     //Filtrar pacientes
-    setFilteredPacientes(
-      pacientes.filter((item) =>
-        item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
+    if (searchTerm === "") {
+      setFilteredPacientes(pacientes);
+    } else {
+      setFilteredPacientes(
+        pacientes.filter((item) =>
+          item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
 
     //Mostrar dialogo
     setOpenPaciente(true);
@@ -88,12 +95,24 @@ function General() {
     medic: "",
     date: dayjs(),
     reason: "",
+    consultorio: "",
   };
   const [formData, setFormData] = useState(initialFormData);
 
+  //Es paciente critico?
+  const [critico, setCritico] = useState(false);
+
+  //Manejo de checkbox critico
+  const handleChangeCritico = (e) => {
+    if (e.target.checked) {
+      setCritico(true);
+    } else {
+      setCritico(false);
+    }
+  };
+
   //Manejo de ventanas
   const handleSubmit = (dialogType) => {
-    console.log("DATOS ENVIADOS: ", formData);
     setFormData(initialFormData);
 
     if (dialogType === "agendar") {
@@ -134,33 +153,60 @@ function General() {
     } else if (dialogType === "paciente") {
       handleClosePaciente();
       navigate("/paciente", { state: { selectedItem: selectedPaciente } });
+
+      //Hacer cita de emergencia
     } else if (dialogType === "emergencia") {
-      handleCloseRegistro();
-    } else if (dialogType === "modificar") {
-      handleCloseModif();
-      navigate("/modificar");
-    } else if (dialogType === "confirmar") {
-      handleCloseConfirm();
-      navigate("/confirmar");
+      //Crear paciente
+      crearPaciente({
+        nombre: formData.name,
+        edad: formData.age,
+      })
+        .then((res) => {
+          console.log("PACIENTE CREADO: ", res);
+          if (res && res.id) {
+            console.log("Paciente ID: ", res.id);
+            crearCita({
+              paciente: { id: res.id },
+              fecha: dayjs().toISOString(),
+              tipo: critico ? "cec" : "ce",
+              razon: formData.reason,
+              consultorio: critico ? null : formData.consultorio,
+            })
+              .then((res) => {
+                console.log("CITA CREADA: ", res);
+                window.alert(
+                  "Cita creada exitosamente id del paciente: " + res.paciente.id
+                );
+              })
+              .catch((err) => console.error("Error creando cita: ", err));
+          } else {
+            console.error("Paciente ID no encontrado");
+          }
+        })
+        .catch((err) => console.error("Error creando paciente: ", err));
     }
   };
 
   //Doctores guarda el listado de doctores
   const [doctores, setDoctores] = useState([]);
+  const [doctoresLoading, setDoctoresLoading] = useState(true);
 
   //Pacientes guarda el listado de pacientes
   const [pacientes, setPacientes] = useState([]);
+  const [pacientesLoading, setPacientesLoading] = useState(true);
 
   //Get doctores y pacientes
   const getMedics = async () => {
     const res = await getDoctores();
     setDoctores(res);
+    setDoctoresLoading(false);
     console.log("MEDICOS: ", res);
   };
 
   const GetPacientes = async () => {
     const res = await getPacientes();
     setPacientes(res);
+    setPacientesLoading(false);
     console.log("PACIENTES: ", res);
   };
 
@@ -170,8 +216,6 @@ function General() {
     getMedics();
   }, []);
 
-  //Filtrar pacientes
-
   //Manejo de busqueda
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -180,20 +224,9 @@ function General() {
     { value: "2", label: "Choque" },
   ];
 
-  const [selectMedic, setSelectMedic] = useState("");
-  const handleSelection = (e) => {
-    setSelectMedic(e.target.value);
-  };
-
-  const appointments = Array.from({ length: 100 }, (_, i) => `Cita ${i + 1}`);
-
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
-
-  const filteredAppointments = appointments.filter((appointment) =>
-    appointment.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <Box
@@ -337,11 +370,19 @@ function General() {
               <MenuItem value="" disabled>
                 Seleccione un médico
               </MenuItem>
-              {doctores.map((medic) => (
-                <MenuItem key={medic.id} value={medic.id}>
-                  {medic.nombre}
+
+              {/* Doctores (Cargarlos hasta que esten listos)*/}
+              {!doctoresLoading ? (
+                doctores.map((medic) => (
+                  <MenuItem key={medic.id} value={medic.id}>
+                    {medic.nombre}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem value="" disabled>
+                  Cargando...
                 </MenuItem>
-              ))}
+              )}
             </Select>
 
             {/* Manejo de fecha y horas*/}
@@ -426,6 +467,7 @@ function General() {
             </List>
           </CustomDialog>
 
+          {/* Registro de emergencias */}
           <Button
             variant="outlined"
             size="large"
@@ -452,6 +494,20 @@ function General() {
             title={"FORMULARIO REGISTRO DE EMERGENCIA"}
             onSubmit={() => handleSubmit("emergencia")}
           >
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+            >
+              <Typography>Emergencia Critica</Typography>
+              <Checkbox
+                checked={critico}
+                onChange={handleChangeCritico}
+                inputProps={{ "aria-label": "controlled checkbox" }}
+              />
+            </Box>
+
             <TextField
               autoFocus
               margin="dense"
@@ -475,24 +531,31 @@ function General() {
               onChange={handleChange}
             />
 
-            <Select
+            <TextField
+              margin="dense"
               name="reason"
-              value={formData.reason}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, reason: e.target.value }))
-              }
+              label="Razon de Ingreso"
+              type="text"
               fullWidth
-              displayEmpty
-            >
-              <MenuItem value="" disabled>
-                Razon de ingreso
-              </MenuItem>
-              {reasons.map((reason) => (
-                <MenuItem key={reason.value} value={reason.value}>
-                  {reason.label}
-                </MenuItem>
-              ))}
-            </Select>
+              variant="outlined"
+              value={formData.reason}
+              onChange={handleChange}
+            />
+
+            {!critico ? (
+              <TextField
+                margin="dense"
+                name="consultorio"
+                label="Consultorio"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={formData.consultorio}
+                onChange={handleChange}
+              />
+            ) : (
+              <></>
+            )}
           </CustomDialog>
         </Box>
       </Box>

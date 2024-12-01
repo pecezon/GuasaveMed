@@ -38,9 +38,19 @@ public class CitaController {
         return citaGuardada.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
     @GetMapping("/paciente/{pacienteId}")
     public ResponseEntity<List<Cita>> obtenerCitasPorPaciente(@PathVariable Long pacienteId) {
         List<Cita> citas = citaService.obtenerCitasPorPaciente(pacienteId);
+        if (citas.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(citas);
+    }
+
+    @GetMapping("/empleado/{empleadoId}")
+    public ResponseEntity<List<Cita>> obtenerCitasPorEmpleado(@PathVariable Long empleadoId) {
+        List<Cita> citas = citaService.obtenerCitasPorEmpleado(empleadoId);
         if (citas.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

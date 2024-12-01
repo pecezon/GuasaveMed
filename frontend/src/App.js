@@ -10,6 +10,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./utils/theme";
 import Medic from "./pages/medic/Medic";
 import PacienteFunctionsTesting from "./pages/testing/PacienteFunctionsTesting";
+import GestionadorCitas from "./pages/personal/GestionadorCitas";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/modificar" element={<Modif />} />
         <Route path="/confirmar" element={<Confirm />} />
         <Route path="/personal" element={<Personal />} />
+        <Route path="/personal/citas" element={<GestionadorCitas />} />
         <Route path="/general" element={<General />} />
         <Route path="/medic" element={<Medic />} />
         <Route path="/test/paciente" element={<PacienteFunctionsTesting />} />
