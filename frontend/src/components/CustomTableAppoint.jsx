@@ -14,8 +14,9 @@ import {
 } from "@mui/material";
 import colors from "../utils/colors";
 import EditarCitaDialog from "./EditarCitaDialog";
+import CancelarCitaDialog from "./CancelarCitaDialog";
 
-function CustomTableAppoint({ citas }) {
+function CustomTableAppoint({ citas, actualizarCitas }) {
   //Open dialog editar cita
   const [open, setOpen] = useState(false);
   const handleClickOpen = (row) => {
@@ -25,6 +26,16 @@ function CustomTableAppoint({ citas }) {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  //Open dialog eliminar cita
+  const [openEliminar, setOpenEliminar] = useState(false);
+  const handleClickOpenEliminar = (row) => {
+    console.log(row);
+    setOpenEliminar(true);
+  };
+  const handleCloseEliminar = () => {
+    setOpenEliminar(false);
   };
 
   //Cita a editar
@@ -87,7 +98,9 @@ function CustomTableAppoint({ citas }) {
                         justifyContent: "center",
                       }}
                     >
-                      {/* Actualizar cita boton y dialog */}
+                      {/* 
+                      Actualizar cita boton y dialog
+                       */}
                       <Button
                         variant="contained"
                         color="primary"
@@ -100,28 +113,22 @@ function CustomTableAppoint({ citas }) {
                         open={open}
                         onClose={handleClose}
                         cita={citaActual}
+                        actualizarCitas={actualizarCitas}
                       ></EditarCitaDialog>
-
-                      <Button
-                        variant="contained"
-                        color="success"
-                        sx={{ marginRight: 1 }}
-                        onClick={() =>
-                          alert(`Confirmando cita con ${row.empleado.nombre}`)
-                        }
-                      >
-                        Confirmar
-                      </Button>
 
                       <Button
                         variant="outlined"
                         color="error"
-                        onClick={() =>
-                          alert(`Eliminando cita con ${row.empleado.nombre}`)
-                        }
+                        onClick={() => handleClickOpenEliminar(row)}
                       >
                         Eliminar
                       </Button>
+                      <CancelarCitaDialog
+                        open={openEliminar}
+                        onClose={handleCloseEliminar}
+                        cita={citaActual}
+                        actualizarCitas={actualizarCitas}
+                      ></CancelarCitaDialog>
                     </Box>
                   </TableCell>
                 </TableRow>

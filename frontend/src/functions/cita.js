@@ -57,7 +57,12 @@ export const borrarCita = async (id) => {
       },
     });
 
-    return await res.json();
+    if (res.status === 204) {
+      return { success: true };
+    }
+
+    const data = await res.json();
+    return data;
   } catch (err) {
     console.log(err);
   }

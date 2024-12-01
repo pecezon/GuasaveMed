@@ -21,10 +21,10 @@ public class CitaService {
     public Cita crearCita(Cita cita) {
         return citaRepository.save(cita);
     }
-    public void eliminarCita(long id){
+    public void eliminarCita(Long id){
         citaRepository.deleteById(id);
     }
-    public Optional<Cita> obtenerCitaPorId(long id){
+    public Optional<Cita> obtenerCitaPorId(Long id){
         return citaRepository.findById(id);
     }
 

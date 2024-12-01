@@ -27,11 +27,23 @@ function Cancel() {
   const [citas, setCitas] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  //Actualizar citas
+  function updateCitas() {
+    setLoading(true);
+    getCitasPorPaciente(pacient.id)
+      .then((data) => {
+        setCitas(data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener citas:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
   useState(() => {
-    getCitasPorPaciente(pacient.id).then((data) => {
-      setCitas(data);
-      setLoading(false);
-    });
+    updateCitas();
   }, []);
 
   return (
@@ -120,24 +132,11 @@ function Cancel() {
           {/* Tabla personalizada para citas programadas */}
           {loading ? (
             <Typography>Cargando...</Typography>
+          ) : Array.isArray(citas) && citas.length > 0 ? (
+            <CustomTableAppoint citas={citas} actualizarCitas={updateCitas} />
           ) : (
-            <CustomTableAppoint citas={citas} />
+            <Typography>No hay citas disponibles</Typography>
           )}
-        </Box>
-
-        <Box
-          sx={{
-            backgroundColor: "white",
-            width: "100%",
-            height: "auto",
-            borderTopLeftRadius: "1rem",
-            borderTopRightRadius: "1rem",
-            textAlign: "center",
-            padding: "0.5rem",
-          }}
-        >
-          <Typography sx={{ marginBottom: "1rem" }}>CITAS PASADAS</Typography>
-          <CustomTablePast />
         </Box>
       </Box>
     </Box>

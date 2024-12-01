@@ -25,11 +25,13 @@ public class CitaController {
         Cita citaGuardada = citaService.crearCita(cita);
         return ResponseEntity.status(HttpStatus.CREATED).body(citaGuardada);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Cita> borrarCita(long id){
+    public ResponseEntity<Cita> borrarCita(@PathVariable Long id){
      citaService.eliminarCita(id);
      return ResponseEntity.status((HttpStatus.NO_CONTENT)).build();
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Cita> obtenerCitaPorId(@PathVariable Long id){
         Optional<Cita> citaGuardada = citaService.obtenerCitaPorId(id);
