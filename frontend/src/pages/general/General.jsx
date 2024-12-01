@@ -46,6 +46,7 @@ function General() {
   const [openModif, setOpenModif] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [selectedPaciente, setSelectedPaciente] = useState(null);
+  const [filteredPacientes, setFilteredPacientes] = useState([]);
 
   const handleOpenAgendar = () => setOpenAgendar(true);
   const handleCloseAgendar = () => setOpenAgendar(false);
@@ -53,8 +54,10 @@ function General() {
   //Que pasa cuando se abre el dialogo del portal pacientes
   const handleOpenPaciente = () => {
     //Filtrar pacientes
-    const filteredPacientes = pacientes.filter((item) =>
-      item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    setFilteredPacientes(
+      pacientes.filter((item) =>
+        item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     );
 
     //Mostrar dialogo
@@ -402,8 +405,8 @@ function General() {
 
             {/* Lista de pacientes */}
             <List>
-              {pacientes.length > 0 ? (
-                pacientes.map((paciente) => (
+              {filteredPacientes.length > 0 ? (
+                filteredPacientes.map((paciente) => (
                   <ListItem
                     key={paciente.id}
                     sx={{ textAlign: "left", cursor: "pointer" }}
