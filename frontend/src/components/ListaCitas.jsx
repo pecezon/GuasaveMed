@@ -61,35 +61,36 @@ const ListaCitas = ({ citas }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {citas.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell align="right">{row.paciente.nombre}</TableCell>
-              <TableCell align="right">{row.fecha}</TableCell>
-              <TableCell align="right">{row.razonIngreso}</TableCell>
-              <TableCell align="right">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleOpenForm(row)}
-                >
-                  Editar
-                </Button>
-                <EditarRegistroDialog
-                  open={open}
-                  onClose={handleCloseForm}
-                  paciente={selectedPaciente}
-                  cita={selectedCita}
-                  onSave={handleSavePaciente}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
+          {citas &&
+            citas.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.id}
+                </TableCell>
+                <TableCell align="right">{row.paciente.nombre}</TableCell>
+                <TableCell align="right">{row.fecha}</TableCell>
+                <TableCell align="right">{row.razonIngreso}</TableCell>
+                <TableCell align="right">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleOpenForm(row)}
+                  >
+                    Editar
+                  </Button>
+                  <EditarRegistroDialog
+                    open={open}
+                    onClose={handleCloseForm}
+                    paciente={selectedPaciente}
+                    cita={selectedCita}
+                    onSave={handleSavePaciente}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

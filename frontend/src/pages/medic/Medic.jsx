@@ -1,12 +1,18 @@
-import React, { useState } from 'react'; 
-import { Box, Typography, Button, TextField} from '@mui/material'; 
-import CustomDialog from '../../components/CustomDialog'; 
-import { useNavigate } from 'react-router-dom';
-import '@fontsource/bayon';
+import React, { useState } from "react";
+import { Box, Typography, Button, TextField } from "@mui/material";
+import CustomDialog from "../../components/CustomDialog";
+import { useNavigate, useLocation } from "react-router-dom";
+import "@fontsource/bayon";
 
 function Medic() {
-  const navegar = useNavigate();
-  const usuario = "Ramiro (El pinche friote)";
+  //Obtener el doctor
+  const location = useLocation();
+  const { doctor } = location.state || {};
+
+  console.log(doctor);
+
+  const navigate = useNavigate();
+  const usuario = doctor.nombre;
 
   const [openCrearExp, setOpenCrearExp] = useState(false);
   const [openConsultarHis, setOpenConsultarHis] = useState(false);
@@ -14,11 +20,11 @@ function Medic() {
   const [openRealizarRec, setOpenRealizarRec] = useState(false);
 
   const [historialClinico, setHistorialClinico] = useState({
-    id: '',
-    diagnosticos: '',
-    padecimiento: '',
-    tratamientos: '',
-    historiaFamiliar: ''
+    id: "",
+    diagnosticos: "",
+    padecimiento: "",
+    tratamientos: "",
+    historiaFamiliar: "",
   });
 
   const handleChange = (e) => {
@@ -28,22 +34,22 @@ function Medic() {
 
   const handleSubmitExp = () => {
     console.log(historialClinico);
-    handleCloseCrearExp();  
+    handleCloseCrearExp();
   };
 
   const handleSubmitCon = () => {
     console.log(historialClinico);
-    handleCloseConsultarHis();  
+    handleCloseConsultarHis();
   };
 
   const handleSubmitRec = () => {
     console.log(historialClinico);
-    handleCloseRealizarRec();  
+    handleCloseRealizarRec();
   };
 
   const handleSubmitActu = () => {
     console.log(historialClinico);
-    handleCloseActualizarHis();  
+    handleCloseActualizarHis();
   };
 
   const handleOpenCrearExp = () => setOpenCrearExp(true);
@@ -54,32 +60,32 @@ function Medic() {
   const handleCloseActualizarHis = () => setOpenActualizarHis(false);
   const handleOpenRealizarRec = () => setOpenRealizarRec(true);
   const handleCloseRealizarRec = () => setOpenRealizarRec(false);
-  
+
   return (
     <Box
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      width: "100%",
-      height: "100%",
-      marginTop: { xs: "5vh", sm: "5vh", md: "5vh" },
-      alignItems: "center",
-      textAlign: "center",
-      padding: { xs: "0rem", sm: "0.5rem" },
-    }}
-  >
-    <Box>
-      <Box 
-      component="img"
-      src="/images/WELCOME.png"
-      alt="Welcome Image"
       sx={{
-        alignItems: 'center',
-        width: '90%',
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "100%",
+        marginTop: { xs: "5vh", sm: "5vh", md: "5vh" },
+        alignItems: "center",
+        textAlign: "center",
+        padding: { xs: "0rem", sm: "0.5rem" },
       }}
-      >
-      </Box>
-      
+    >
+      {/* Box para la bienvenida */}
+      <Box>
+        <Box
+          component="img"
+          src="/images/WELCOME.png"
+          alt="Welcome Image"
+          sx={{
+            alignItems: "center",
+            width: "90%",
+          }}
+        ></Box>
+
         <Typography
           sx={{
             fontSize: { xs: "1rem", sm: "1.5rem", md: "2rem" },
@@ -88,87 +94,98 @@ function Medic() {
         >
           DOCTOR
         </Typography>
-        <Typography sx= {{
-          fontSize: { xs: "1rem", sm: "1.5rem", md: "2rem" },
-          marginTop: "2rem",
-        }}>
-          {usuario}
-        </Typography>
-    </Box>   
-
-    <Box sx = {{
-      marginTop: { xs: "30%", sm: "20%", md: "7%" },
-      width: '80%',
-      height: 'auto',
-      justifyContent: 'center',
-      display: 'flex',
-      alignSelf: 'center',
-      paddingTop: {xs: '1rem', sm: '2rem', md: '4rem'},
-      paddingBottom: {xs: '1rem', sm: '2rem', md: '4rem'},
-      paddingLeft: {xs: '1rem', sm: '2rem', md: '4rem'},
-      paddingRight: {xs: '1rem', sm: '2rem', md: '4rem'},
-      borderRadius: 16,
-      backgroundColor:'#E6F2FC',
-      boxShadow: 'inset 0px 4px 47.8px rgba(39,91,158,0.25)',
-      zIndex: 2,
-    }}>
-      <Box sx={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
-          width: '100%',
-        }}
-      >
-        
-          <Button
-          variant="contained" // Use "contained" to enable background color fill
-          size="large"
-          onClick={handleOpenCrearExp}
+        <Typography
           sx={{
-            fontFamily: "Bayon, sans-serif", 
-            fontSize: { xs: "12px", sm: "14px", md: "16px" },
-            padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
-            borderRadius: "1rem",
-            boxShadow: 2,
-            color: '#56210A',
-            backgroundColor: '#FFFAF4',
-            "&:hover": {
-              backgroundColor: '#FFBC58'},
+            fontSize: { xs: "1rem", sm: "1.5rem", md: "2rem" },
+            marginTop: "2rem",
           }}
         >
-          CREAR EXPEDIENTE
-        </Button>
+          {usuario}
+        </Typography>
+      </Box>
 
-        <CustomDialog
-          open={openCrearExp}
-          onClose={handleCloseCrearExp}
-          title="Crear expediente"
-          onSubmit={handleSubmitExp}
+      <Box
+        sx={{
+          marginTop: { xs: "30%", sm: "20%", md: "7%" },
+          width: "80%",
+          height: "auto",
+          justifyContent: "center",
+          display: "flex",
+          alignSelf: "center",
+          paddingTop: { xs: "1rem", sm: "2rem", md: "4rem" },
+          paddingBottom: { xs: "1rem", sm: "2rem", md: "4rem" },
+          paddingLeft: { xs: "1rem", sm: "2rem", md: "4rem" },
+          paddingRight: { xs: "1rem", sm: "2rem", md: "4rem" },
+          borderRadius: 16,
+          backgroundColor: "#E6F2FC",
+          boxShadow: "inset 0px 4px 47.8px rgba(39,91,158,0.25)",
+          zIndex: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
+            width: "100%",
+          }}
         >
-          <TextField
-            id="outlined-number"
-            label="Id"
-            type="number"
-            sx={{ marginBottom: '1rem', marginTop: '1rem' }}
-            slotProps={{
-              inputLabel: {
-                shrink: true,
+          {/* 
+          
+          Crear expediente
+          
+          */}
+
+          <Button
+            variant="contained" // Use "contained" to enable background color fill
+            size="large"
+            onClick={handleOpenCrearExp}
+            sx={{
+              fontFamily: "Bayon, sans-serif",
+              fontSize: { xs: "12px", sm: "14px", md: "16px" },
+              padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
+              borderRadius: "1rem",
+              boxShadow: 2,
+              color: "#56210A",
+              backgroundColor: "#FFFAF4",
+              "&:hover": {
+                backgroundColor: "#FFBC58",
               },
             }}
-          />
-          <TextField
-            label="Diagnósticos anteriores"
-            name="diagnosticos"
-            value={historialClinico.diagnosticos}
-            onChange={handleChange}
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginBottom: '1rem' }}
-          />
+          >
+            CREAR EXPEDIENTE
+          </Button>
+
+          <CustomDialog
+            open={openCrearExp}
+            onClose={handleCloseCrearExp}
+            title="Crear expediente"
+            onSubmit={handleSubmitExp}
+          >
+            <TextField
+              id="outlined-number"
+              label="Id"
+              type="number"
+              sx={{ marginBottom: "1rem", marginTop: "1rem" }}
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
+              }}
+            />
+            <TextField
+              label="Diagnósticos anteriores"
+              name="diagnosticos"
+              value={historialClinico.diagnosticos}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginBottom: "1rem" }}
+            />
             <TextField
               label="Padecimiento actual"
               name="padecimiento"
@@ -177,7 +194,7 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
               label="Tratamientos actuales"
@@ -187,7 +204,7 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
               label="Historia clínica familiar"
@@ -197,48 +214,55 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
           </CustomDialog>
 
-          <Button size = 'large' onClick={handleOpenConsultarHis} 
+          {/* 
+          
+          Consultar historial
+          
+          */}
+
+          <Button
+            size="large"
+            onClick={handleOpenConsultarHis}
             sx={{
-              fontFamily: "Bayon, sans-serif", 
+              fontFamily: "Bayon, sans-serif",
               fontSize: { xs: "12px", sm: "14px", md: "16px" },
               padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
               borderRadius: "1rem",
               boxShadow: 2,
-              color: '#56210A',
-              backgroundColor: '#FFFAF4',
+              color: "#56210A",
+              backgroundColor: "#FFFAF4",
               "&:hover": {
-                backgroundColor: '#FFBC58'},
+                backgroundColor: "#FFBC58",
+              },
             }}
           >
             CONSULTAR HISTORIAL
           </Button>
 
-          <CustomDialog 
+          <CustomDialog
             open={openConsultarHis}
             onClose={handleCloseConsultarHis}
-            title="Consultar Historial" 
-            onSubmit={handleSubmitCon} 
+            title="Consultar Historial"
+            onSubmit={handleSubmitCon}
           >
             <TextField
-              id='numberConsultar'
+              id="numberConsultar"
               label="Id"
               //value={historialClinico.id}
               type="number"
-              sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
+              sx={{ marginBottom: "1rem", marginTop: "1rem" }}
               slotProps={{
                 inputLabel: {
                   shrink: true,
                 },
               }}
-            
             />
             <TextField
               disabled
-
               slotProps={{
                 input: {
                   readOnly: true,
@@ -251,11 +275,10 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
               disabled
-
               slotProps={{
                 input: {
                   readOnly: true,
@@ -268,10 +291,10 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
-            disabled
+              disabled
               slotProps={{
                 input: {
                   readOnly: true,
@@ -284,10 +307,10 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
-            disabled
+              disabled
               slotProps={{
                 input: {
                   readOnly: true,
@@ -300,37 +323,46 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
           </CustomDialog>
 
-          <Button size = 'large' onClick={handleOpenRealizarRec} 
+          {/* 
+          
+          Hacer Receta
+          
+          */}
+
+          <Button
+            size="large"
+            onClick={handleOpenRealizarRec}
             sx={{
-              fontFamily: "Bayon, sans-serif", 
+              fontFamily: "Bayon, sans-serif",
               fontSize: { xs: "12px", sm: "14px", md: "16px" },
               padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
               borderRadius: "1rem",
               boxShadow: 2,
-              color: '#56210A',
-              backgroundColor: '#FFFAF4',
+              color: "#56210A",
+              backgroundColor: "#FFFAF4",
               "&:hover": {
-                backgroundColor: '#FFBC58'},
+                backgroundColor: "#FFBC58",
+              },
             }}
           >
             HACER RECETA
-            </Button>
+          </Button>
 
-          <CustomDialog 
+          <CustomDialog
             open={openRealizarRec}
             onClose={handleCloseRealizarRec}
-            title="Hacer Receta" 
-            onSubmit={handleSubmitRec} 
+            title="Hacer Receta"
+            onSubmit={handleSubmitRec}
           >
             <TextField
               label="numberReceta"
               //value={historialClinico.id}
               type="number"
-              sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
+              sx={{ marginBottom: "1rem", marginTop: "1rem" }}
               slotProps={{
                 inputLabel: {
                   shrink: true,
@@ -345,7 +377,7 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
               label="Especificaciones"
@@ -355,43 +387,51 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
-            
           </CustomDialog>
 
-          <Button size = 'large' onClick={handleOpenActualizarHis} 
+          {/* 
+          
+          Actualizar Historial
+          
+          */}
+
+          <Button
+            size="large"
+            onClick={handleOpenActualizarHis}
             sx={{
-              fontFamily: "Bayon, sans-serif", 
+              fontFamily: "Bayon, sans-serif",
               fontSize: { xs: "12px", sm: "14px", md: "16px" },
               padding: { xs: "1rem 2rem", sm: "1.5rem 3rem", md: "2rem 4rem" },
               borderRadius: "1rem",
               boxShadow: 2,
-              color: '#56210A',
-              backgroundColor: '#FFFAF4',
+              color: "#56210A",
+              backgroundColor: "#FFFAF4",
               "&:hover": {
-                backgroundColor: '#FFBC58'},
+                backgroundColor: "#FFBC58",
+              },
             }}
           >
             ACTUALIZAR DATOS
           </Button>
-          
-          <CustomDialog 
+
+          <CustomDialog
             open={openActualizarHis}
             onClose={handleCloseActualizarHis}
-            title="Actualizar datos" 
-            onSubmit={handleSubmitActu} 
+            title="Actualizar datos"
+            onSubmit={handleSubmitActu}
           >
             <TextField
-            id="numberActu"
-            label="Id"
-            type="number"
-            sx={{ marginBottom: '1rem' , marginTop: '1rem'}}
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
+              id="numberActu"
+              label="Id"
+              type="number"
+              sx={{ marginBottom: "1rem", marginTop: "1rem" }}
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
+              }}
             />
             <TextField
               label="Diagnósticos anteriores"
@@ -401,7 +441,7 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
               label="Padecimiento actual"
@@ -411,7 +451,7 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
               label="Tratamientos actuales"
@@ -421,7 +461,7 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
             <TextField
               label="Historia clínica familiar"
@@ -431,13 +471,12 @@ function Medic() {
               fullWidth
               multiline
               rows={4}
-              sx={{ marginBottom: '1rem' }}
+              sx={{ marginBottom: "1rem" }}
             />
           </CustomDialog>
+        </Box>
       </Box>
     </Box>
-    
-  </Box>
   );
 }
 

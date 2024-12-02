@@ -1,14 +1,19 @@
-import React, { useState } from 'react'; 
-import { Box, Button, IconButton, InputAdornment, Typography } from "@mui/material";
-import TextField from '@mui/material/TextField';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useNavigate } from "react-router-dom";
 
-import { login } from '../../functions/login';
+import { login } from "../../functions/login";
 
 function Login() {
-
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -17,7 +22,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await login({ usuario:user, password:password });
+      const response = await login({ usuario: user, password: password });
 
       //Desestructuramos la respuesta
       const { tipo } = response;
@@ -26,21 +31,21 @@ function Login() {
       console.log(response);
 
       //Si es recepcionista general
-      if (tipo === "rg") navigate("/general", { state: { nombre: response.nombre } });
-
+      if (tipo === "rg")
+        navigate("/general", { state: { nombre: response.nombre } });
       //Si es recepcionista personal
-      else if (tipo === "rp") navigate("/personal", { state: { id: response.id } });
-
+      else if (tipo === "rp")
+        navigate("/personal", { state: { id: response.id } });
       //Si es doctor
-      else if (tipo === "doctor") navigate("/doctor");
-
+      else if (tipo === "doctor")
+        navigate("/medic", { state: { doctor: response } });
       //Si es un intruso
       else alert("Quien sos?");
     } catch (error) {
       //Si hay un error (malas credenciales)
       alert("Ponga bien su contra o usuario wei");
     }
-  }
+  };
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -58,7 +63,6 @@ function Login() {
         padding: { xs: "0rem", sm: "0.5rem" },
       }}
     >
-      
       <Box>
         <Box
           component="img"
@@ -71,51 +75,52 @@ function Login() {
         />
       </Box>
 
-      <Box sx={{
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-        gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
-        width: {xs: "80%", sm: "50%", md: "30%"},
-        //marginTop: {xs: "30%", sm: "20%", md: "7%"}
-      }}>
-
-        <TextField 
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
+          width: { xs: "80%", sm: "50%", md: "30%" },
+          //marginTop: {xs: "30%", sm: "20%", md: "7%"}
+        }}
+      >
+        <TextField
           autoFocus
           margin="dense"
           name="user"
           label="Usuario"
           color="56210A"
           variant="outlined"
-          type='text'
+          type="text"
           value={user}
           onChange={(e) => setUser(e.target.value)}
           focused
           sx={{
             width: "170%",
             "& .MuiInputBase-root": {
-              backgroundColor: "#FFFAF4", 
+              backgroundColor: "#FFFAF4",
               borderRadius: "5",
             },
             "& .MuiInputBase-input": {
-              fontSize: "120%", 
+              fontSize: "120%",
               color: "#56210A",
             },
             "& .MuiInputLabel-root": {
               fontSize: "120%",
-              color: "#56210A", 
+              color: "#56210A",
             },
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "#56210A", 
+                borderColor: "#56210A",
               },
               "&:hover fieldset": {
-                borderColor: "#56210A", 
+                borderColor: "#56210A",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "#56210A", 
+                borderColor: "#56210A",
               },
             },
           }}
@@ -132,37 +137,37 @@ function Login() {
           sx={{
             width: "170%",
             "& .MuiInputBase-root": {
-              backgroundColor: "#FFFAF4", 
+              backgroundColor: "#FFFAF4",
               borderRadius: "5",
             },
             "& .MuiInputBase-input": {
-              fontSize: "120%", 
+              fontSize: "120%",
               color: "#56210A",
             },
             "& .MuiInputLabel-root": {
               fontSize: "120%",
-              color: "#56210A", 
+              color: "#56210A",
             },
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "#56210A", 
+                borderColor: "#56210A",
               },
               "&:hover fieldset": {
-                borderColor: "#56210A", 
+                borderColor: "#56210A",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "#56210A", 
+                borderColor: "#56210A",
               },
             },
           }}
           InputProps={{
             endAdornment: (
-              <InputAdornment position='end'>
+              <InputAdornment position="end">
                 <IconButton onClick={handleClickShowPassword} edge="end">
-                  {showPassword ? <VisibilityOff/> : <Visibility />}
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
 
@@ -189,33 +194,33 @@ function Login() {
         sx={{
           position: "absolute",
           backgroundImage: "url('/images/ninaGlobos.png')",
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'contain',
-          alignSelf: 'baseline',
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          alignSelf: "baseline",
           width: 400,
           height: 400,
           marginTop: "0%",
           marginLeft: "10%",
           zIndex: -1,
-          pointerEvents: 'none',
+          pointerEvents: "none",
         }}
-        />
+      />
 
-        <Box
-          sx={{
-            position: "absolute",
-            backgroundImage: "url('/images/blocks.png')",
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'contain',
-            width: 400,
-            height: 400,
-            marginTop: "25%",
-            marginLeft: "60%",
-            zIndex: -1,
-            pointerEvents: 'none',
-          }}
-        />
-      </Box>
+      <Box
+        sx={{
+          position: "absolute",
+          backgroundImage: "url('/images/blocks.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          width: 400,
+          height: 400,
+          marginTop: "25%",
+          marginLeft: "60%",
+          zIndex: -1,
+          pointerEvents: "none",
+        }}
+      />
+    </Box>
   );
 }
 
