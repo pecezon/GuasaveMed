@@ -16,9 +16,8 @@ const CustomDialog = ({
       <DialogContent>{children}</DialogContent>
       <Button
         onClick={onSubmit}
-        color={colorBoton}
         variant="contained"
-        sx={{ m: 2 }}
+        sx={{ m: 2, backgroundColor: colorBoton }}
       >
         {nombreBoton}
       </Button>

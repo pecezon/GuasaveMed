@@ -4,12 +4,23 @@ import CustomDialog from "../../components/CustomDialog";
 import { useNavigate, useLocation } from "react-router-dom";
 import "@fontsource/bayon";
 
+//Funcion para crear expediente
+import {
+  crearExpediente,
+  getExpedientePaciente,
+  actualizarExpediente,
+} from "../../functions/expediente";
+
+//Funcion para crear receta
+import { crearReceta } from "../../functions/receta";
+
+//Funcion para crear pdf de recetas
+import { generarRecetaPDF } from "../../functions/pdf";
+
 function Medic() {
   //Obtener el doctor
   const location = useLocation();
   const { doctor } = location.state || {};
-
-  console.log(doctor);
 
   const navigate = useNavigate();
   const usuario = doctor.nombre;
@@ -24,17 +35,180 @@ function Medic() {
     diagnosticos: "",
     padecimiento: "",
     tratamientos: "",
-    historiaFamiliar: "",
+    historiaClinica: "",
   });
 
-  const handleChange = (e) => {
+  /**
+   *
+   * CREACION DE EXPEDIENTES
+   *
+   */
+
+  const [expediente, setExpediente] = useState({
+    paciente: {
+      id: "",
+    },
+    diagnosticos: "",
+    padecimiento: "",
+    tratamientos: "",
+    historiaClinica: "",
+  });
+
+  const handleChangeExpediente = (e) => {
     const { name, value } = e.target;
-    setHistorialClinico((prev) => ({ ...prev, [name]: value }));
+
+    setExpediente((prev) => {
+      if (name === "paciente") {
+        return { ...prev, paciente: { ...prev.paciente, id: value } };
+      }
+      return { ...prev, [name]: value };
+    });
   };
 
   const handleSubmitExp = () => {
-    console.log(historialClinico);
+    crearExpediente(expediente)
+      .then((res) => {
+        if (res.error) {
+          alert("Error al crear expediente");
+          return;
+        }
+        console.log(res);
+        alert("Expediente creado con exito");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Error al crear expediente");
+      });
     handleCloseCrearExp();
+  };
+
+  /*
+  
+  Consultar expediente
+
+
+  */
+
+  const [expedienteConsultar, setExpedienteConsultar] = useState();
+  const [idPaciente, setIdPaciente] = useState();
+
+  const buscarExpediente = async (id) => {
+    try {
+      const res = await getExpedientePaciente(id);
+      setExpedienteConsultar(res);
+      if (res.error) {
+        alert("Error al buscar expediente");
+        return;
+      }
+    } catch (error) {
+      alert("Error al buscar expediente");
+      console.log(error);
+    }
+  };
+
+  /*
+  
+    Crear Receta
+  
+  */
+  const [receta, setReceta] = useState({
+    paciente: {
+      id: "",
+    },
+    empleado: {
+      id: doctor.id,
+    },
+    medicamentos: "",
+    especificaciones: "",
+  });
+
+  const handleRecetaChange = (e) => {
+    const { name, value } = e.target;
+
+    setReceta((prev) => {
+      if (name === "paciente") {
+        return { ...prev, paciente: { ...prev.paciente, id: value } };
+      }
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const handleRecetaSubmit = () => {
+    crearReceta(receta)
+      .then((res) => {
+        if (res.error) {
+          alert("Error al crear receta");
+          return;
+        }
+        console.log(res);
+        alert("Receta creada con exito");
+        generarRecetaPDF(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Error al crear receta");
+      });
+    handleCloseRealizarRec();
+  };
+
+  /* 
+  
+  ACTUALIZAR EXPEDIENTE
+  
+  */
+
+  const [idPacienteActualizar, setIdPacienteActualizar] = useState();
+  const [expedienteActualizar, setExpedienteActualizar] = useState({
+    diagnosticos: "",
+    padecimiento: "",
+    tratamientos: "",
+    historiaClinica: "",
+  });
+
+  const buscarExpedienteActualizar = async () => {
+    try {
+      const res = await getExpedientePaciente(idPacienteActualizar);
+      if (res.error) {
+        alert("Error al buscar expediente");
+        return;
+      }
+      setExpedienteActualizar(res);
+    } catch (error) {
+      alert("Error al buscar expediente");
+      console.log(error);
+    }
+  };
+
+  const handleChangeExpedienteActualizar = (e) => {
+    const { name, value } = e.target;
+
+    setExpedienteActualizar((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const handleActualizarSubmit = async () => {
+    try {
+      console.log(expedienteActualizar.id, expedienteActualizar);
+      const res = await actualizarExpediente(
+        expedienteActualizar.id,
+        expedienteActualizar
+      );
+      if (res.error) {
+        alert("Error al actualizar expediente");
+        return;
+      }
+      alert("Expediente actualizado con exito");
+    } catch (error) {
+      alert("Error al actualizar expediente");
+      console.log(error);
+    }
+  };
+
+  //No se que chingados es esto pero lo dejo por si acaso
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setHistorialClinico((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmitCon = () => {
@@ -167,8 +341,11 @@ function Medic() {
           >
             <TextField
               id="outlined-number"
-              label="Id"
+              label="Id Paciente"
               type="number"
+              name="paciente"
+              value={expediente.paciente.id}
+              onChange={handleChangeExpediente}
               sx={{ marginBottom: "1rem", marginTop: "1rem" }}
               slotProps={{
                 inputLabel: {
@@ -179,8 +356,8 @@ function Medic() {
             <TextField
               label="Diagnósticos anteriores"
               name="diagnosticos"
-              value={historialClinico.diagnosticos}
-              onChange={handleChange}
+              value={expediente.diagnosticos}
+              onChange={handleChangeExpediente}
               fullWidth
               multiline
               rows={4}
@@ -189,8 +366,8 @@ function Medic() {
             <TextField
               label="Padecimiento actual"
               name="padecimiento"
-              value={historialClinico.padecimiento}
-              onChange={handleChange}
+              value={expediente.padecimiento}
+              onChange={handleChangeExpediente}
               fullWidth
               multiline
               rows={4}
@@ -199,8 +376,8 @@ function Medic() {
             <TextField
               label="Tratamientos actuales"
               name="tratamientos"
-              value={historialClinico.tratamientos}
-              onChange={handleChange}
+              value={expediente.tratamientos}
+              onChange={handleChangeExpediente}
               fullWidth
               multiline
               rows={4}
@@ -208,9 +385,9 @@ function Medic() {
             />
             <TextField
               label="Historia clínica familiar"
-              name="historiaFamiliar"
-              value={historialClinico.historiaFamiliar}
-              onChange={handleChange}
+              name="historiaClinica"
+              value={expediente.historiaClinica}
+              onChange={handleChangeExpediente}
               fullWidth
               multiline
               rows={4}
@@ -248,21 +425,46 @@ function Medic() {
             onClose={handleCloseConsultarHis}
             title="Consultar Historial"
             onSubmit={handleSubmitCon}
+            colorBoton="red"
+            nombreBoton="Cerrar"
           >
-            <TextField
-              id="numberConsultar"
-              label="Id"
-              //value={historialClinico.id}
-              type="number"
-              sx={{ marginBottom: "1rem", marginTop: "1rem" }}
-              slotProps={{
-                inputLabel: {
+            <Box
+              display="flex"
+              flexDirection="row"
+              flexWrap="wrap"
+              gap={"1rem"}
+              alignItems={"center"}
+            >
+              <TextField
+                InputLabelProps={{
                   shrink: true,
-                },
-              }}
-            />
+                }}
+                id="numberConsultar"
+                label="Id Paciente"
+                name="idPaciente"
+                value={idPaciente}
+                type="number"
+                onChange={(e) => setIdPaciente(e.target.value)}
+                sx={{ marginBottom: "1rem", marginTop: "1rem" }}
+                slotProps={{
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
+              />
+              <Button
+                variant="contained"
+                sx={{ height: "3rem" }}
+                onClick={() => buscarExpediente(idPaciente)}
+              >
+                Buscar
+              </Button>
+            </Box>
             <TextField
               disabled
+              InputLabelProps={{
+                shrink: true,
+              }}
               slotProps={{
                 input: {
                   readOnly: true,
@@ -270,8 +472,7 @@ function Medic() {
               }}
               label="Diagnósticos anteriores"
               name="diagnosticos"
-              value={historialClinico.diagnosticos}
-              onChange={handleChange}
+              value={expedienteConsultar?.diagnosticos}
               fullWidth
               multiline
               rows={4}
@@ -279,6 +480,9 @@ function Medic() {
             />
             <TextField
               disabled
+              InputLabelProps={{
+                shrink: true,
+              }}
               slotProps={{
                 input: {
                   readOnly: true,
@@ -286,8 +490,7 @@ function Medic() {
               }}
               label="Padecimiento actual"
               name="padecimiento"
-              value={historialClinico.padecimiento}
-              onChange={handleChange}
+              value={expedienteConsultar?.padecimiento}
               fullWidth
               multiline
               rows={4}
@@ -295,6 +498,9 @@ function Medic() {
             />
             <TextField
               disabled
+              InputLabelProps={{
+                shrink: true,
+              }}
               slotProps={{
                 input: {
                   readOnly: true,
@@ -302,8 +508,7 @@ function Medic() {
               }}
               label="Tratamientos actuales"
               name="tratamientos"
-              value={historialClinico.tratamientos}
-              onChange={handleChange}
+              value={expedienteConsultar?.tratamientos}
               fullWidth
               multiline
               rows={4}
@@ -311,6 +516,9 @@ function Medic() {
             />
             <TextField
               disabled
+              InputLabelProps={{
+                shrink: true,
+              }}
               slotProps={{
                 input: {
                   readOnly: true,
@@ -318,8 +526,7 @@ function Medic() {
               }}
               label="Historia clínica familiar"
               name="historiaFamiliar"
-              value={historialClinico.historiaFamiliar}
-              onChange={handleChange}
+              value={expedienteConsultar?.historiaClinica}
               fullWidth
               multiline
               rows={4}
@@ -356,12 +563,15 @@ function Medic() {
             open={openRealizarRec}
             onClose={handleCloseRealizarRec}
             title="Hacer Receta"
-            onSubmit={handleSubmitRec}
+            onSubmit={handleRecetaSubmit}
           >
             <TextField
-              label="numberReceta"
+              label="Id Paciente"
               //value={historialClinico.id}
               type="number"
+              value={receta.paciente.id}
+              name="paciente"
+              onChange={handleRecetaChange}
               sx={{ marginBottom: "1rem", marginTop: "1rem" }}
               slotProps={{
                 inputLabel: {
@@ -372,8 +582,8 @@ function Medic() {
             <TextField
               label="Nombre del medicamento"
               name="medicamentos"
-              //value={historialClinico.diagnosticos}
-              onChange={handleChange}
+              value={receta.medicamentos}
+              onChange={handleRecetaChange}
               fullWidth
               multiline
               rows={4}
@@ -381,9 +591,9 @@ function Medic() {
             />
             <TextField
               label="Especificaciones"
-              name="Especificaciones"
-              //value={historialClinico.padecimiento}
-              onChange={handleChange}
+              name="especificaciones"
+              value={receta.especificaciones}
+              onChange={handleRecetaChange}
               fullWidth
               multiline
               rows={4}
@@ -420,54 +630,89 @@ function Medic() {
             open={openActualizarHis}
             onClose={handleCloseActualizarHis}
             title="Actualizar datos"
-            onSubmit={handleSubmitActu}
+            onSubmit={handleActualizarSubmit}
+            nombreBoton="Actualizar"
+            colorBoton="green"
           >
-            <TextField
-              id="numberActu"
-              label="Id"
-              type="number"
-              sx={{ marginBottom: "1rem", marginTop: "1rem" }}
-              slotProps={{
-                inputLabel: {
+            <Box
+              display="flex"
+              flexDirection="row"
+              flexWrap="wrap"
+              gap={"1rem"}
+              alignItems={"center"}
+            >
+              <TextField
+                InputLabelProps={{
                   shrink: true,
-                },
-              }}
-            />
+                }}
+                id="numberConsultar"
+                label="Id Paciente"
+                name="idPacienteActualizar"
+                value={idPacienteActualizar}
+                type="number"
+                onChange={(e) => setIdPacienteActualizar(e.target.value)}
+                sx={{ marginBottom: "1rem", marginTop: "1rem" }}
+                slotProps={{
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
+              />
+              <Button
+                variant="contained"
+                sx={{ height: "3rem" }}
+                onClick={() => buscarExpedienteActualizar(idPacienteActualizar)}
+              >
+                Buscar
+              </Button>
+            </Box>
             <TextField
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Diagnósticos anteriores"
               name="diagnosticos"
-              defaultValue={historialClinico.diagnosticos}
-              onChange={handleChange}
+              value={expedienteActualizar?.diagnosticos}
+              onChange={handleChangeExpedienteActualizar}
               fullWidth
               multiline
               rows={4}
               sx={{ marginBottom: "1rem" }}
             />
             <TextField
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Padecimiento actual"
               name="padecimiento"
-              defaultValue={historialClinico.padecimiento}
-              onChange={handleChange}
+              value={expedienteActualizar?.padecimiento}
+              onChange={handleChangeExpedienteActualizar}
               fullWidth
               multiline
               rows={4}
               sx={{ marginBottom: "1rem" }}
             />
             <TextField
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Tratamientos actuales"
               name="tratamientos"
-              defaultValue={historialClinico.tratamientos}
-              onChange={handleChange}
+              defaultValue={expedienteActualizar?.tratamientos}
+              onChange={handleChangeExpedienteActualizar}
               fullWidth
               multiline
               rows={4}
               sx={{ marginBottom: "1rem" }}
             />
             <TextField
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Historia clínica familiar"
               name="historiaFamiliar"
-              defaultValue={historialClinico.historiaFamiliar}
-              onChange={handleChange}
+              defaultValue={expedienteActualizar?.historiaClinica}
+              onChange={handleChangeExpedienteActualizar}
               fullWidth
               multiline
               rows={4}
