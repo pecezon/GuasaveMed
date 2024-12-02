@@ -31,7 +31,8 @@ function CustomTableAppoint({ citas, actualizarCitas }) {
   //Open dialog eliminar cita
   const [openEliminar, setOpenEliminar] = useState(false);
   const handleClickOpenEliminar = (row) => {
-    console.log(row);
+    setCitaActual(row);
+    console.log(row, "arriba el america");
     setOpenEliminar(true);
   };
   const handleCloseEliminar = () => {

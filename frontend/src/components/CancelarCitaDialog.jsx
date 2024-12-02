@@ -26,7 +26,11 @@ const CancelarCitaDialog = ({ open, onClose, cita, actualizarCitas }) => {
 
   const handleSubmit = async () => {
     try {
-      await borrarCita(cita.id);
+      const res = await borrarCita(cita.id);
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
       actualizarCitas();
       alert("Cita eliminada correctamente");
       handleClose();

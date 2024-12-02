@@ -28,7 +28,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 //Funciones de la API
 import { getDoctores } from "../../functions/empleado";
 import { crearCita } from "../../functions/cita";
-import { crearPaciente, getPacientes } from "../../functions/paciente";
+import {
+  crearPaciente,
+  getPacientes,
+  getPaciente,
+} from "../../functions/paciente";
 
 function General() {
   //React router
@@ -103,6 +107,12 @@ function General() {
   //Es paciente critico?
   const [critico, setCritico] = useState(false);
 
+  //Es paciente existente?
+  const [existente, setExistente] = useState(false);
+
+  //Id del paciente a actualizar
+  const [idPacienteActualizar, setIdPacienteActualizar] = useState("");
+
   //Manejo de checkbox critico
   const handleChangeCritico = (e) => {
     if (e.target.checked) {
@@ -122,35 +132,70 @@ function General() {
       // Al crear una cita, se debe enviar el id del paciente, el id del médico, la fecha y la hora
       // Antes de crear una cita se debe crear un paciente
 
-      crearPaciente({
-        nombre: formData.name,
-        edad: formData.age,
-        telefono: formData.phone,
-      })
-        .then((res) => {
-          console.log("PACIENTE CREADO: ", res);
-          if (res && res.id) {
-            console.log("Paciente ID: ", res.id);
-            crearCita({
-              paciente: { id: res.id },
-              empleado: { id: formData.medic },
-              fecha: formData.date.toISOString(),
-              tipo: "cn",
-            })
-              .then((res) => {
-                console.log("CITA CREADA: ", res);
-                window.alert(
-                  "Cita creada exitosamente id del paciente: " + res.paciente.id
-                );
-              })
-              .catch((err) => console.error("Error creando cita: ", err));
-          } else {
-            console.error("Paciente ID no encontrado");
-          }
+      if (existente) {
+        //Crear cita con paciente existente
+        crearCita({
+          paciente: { id: idPacienteActualizar },
+          empleado: { id: formData.medic },
+          fecha: formData.date.toISOString(),
+          tipo: "cn",
+          consultorio: formData.consultorio,
         })
-        .catch((err) => console.error("Error creando paciente: ", err));
+          .then((res) => {
+            if (res.error) {
+              console.error("Error creando cita: ", res.error);
+              window.alert("Error creando cita: " + res.error);
+              return;
+            }
+            console.log("CITA CREADA: ", res);
+            window.alert(
+              "Cita creada exitosamente id del paciente: " + res.paciente.id
+            );
+          })
+          .catch((err) => console.error("Error creando cita: ", err));
+      } else {
+        crearPaciente({
+          nombre: formData.name,
+          edad: formData.age,
+          telefono: formData.phone,
+        })
+          .then((res) => {
+            if (res.error) {
+              console.error("Error creando paciente: ", res.error);
+              window.alert("Error creando paciente: " + res.error);
+              return;
+            }
+            console.log("PACIENTE CREADO: ", res);
+            if (res && res.id) {
+              console.log("Paciente ID: ", res.id);
+              crearCita({
+                paciente: { id: res.id },
+                empleado: { id: formData.medic },
+                fecha: formData.date.toISOString(),
+                tipo: "cn",
+                consultorio: formData.consultorio,
+              })
+                .then((res) => {
+                  if (res.error) {
+                    console.error("Error creando cita: ", res.error);
+                    window.alert("Error creando cita: " + res.error);
+                    return;
+                  }
+                  console.log("CITA CREADA: ", res);
+                  window.alert(
+                    "Cita creada exitosamente id del paciente: " +
+                      res.paciente.id
+                  );
+                })
+                .catch((err) => console.error("Error creando cita: ", err));
+            } else {
+              console.error("Paciente ID no encontrado");
+            }
+          })
+          .catch((err) => console.error("Error creando paciente: ", err));
 
-      handleCloseAgendar();
+        handleCloseAgendar();
+      }
     } else if (dialogType === "paciente") {
       handleClosePaciente();
       navigate("/paciente", { state: { selectedItem: selectedPaciente } });
@@ -213,8 +258,11 @@ function General() {
 
   //Codigo ejecutado al cargar la pagina
   useEffect(() => {
-    GetPacientes();
-    getMedics();
+    const fetchData = async () => {
+      await GetPacientes();
+      await getMedics();
+    };
+    fetchData();
   }, []);
 
   //Manejo de busqueda
@@ -328,37 +376,71 @@ function General() {
             title={"FORMULARIO AGENDAR CITA"}
             onSubmit={() => handleSubmit("agendar")}
           >
-            <TextField
-              autoFocus
-              margin="dense"
-              name="name"
-              label="Nombre"
-              type="text"
-              fullWidth
-              variant="outlined"
-              value={formData.name}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="dense"
-              name="age"
-              label="Edad"
-              type="number"
-              fullWidth
-              variant="outlined"
-              value={formData.age}
-              onChange={handleChange}
-            />
-            <TextField
-              margin="dense"
-              name="phone"
-              label="Teléfono"
-              type="tel"
-              fullWidth
-              variant="outlined"
-              value={formData.phone}
-              onChange={handleChange}
-            />
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+            >
+              <Typography>Paciente Existente?</Typography>
+              <Checkbox
+                checked={existente}
+                onChange={(e) => setExistente(e.target.checked)}
+                inputProps={{ "aria-label": "controlled checkbox" }}
+              />
+            </Box>
+            {!existente ? (
+              <>
+                <TextField
+                  margin="dense"
+                  name="name"
+                  label="Nombre"
+                  type="text"
+                  fullWidth
+                  variant="outlined"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="age"
+                  label="Edad"
+                  type="number"
+                  fullWidth
+                  variant="outlined"
+                  value={formData.age}
+                  onChange={handleChange}
+                />
+                <TextField
+                  margin="dense"
+                  name="phone"
+                  label="Teléfono"
+                  type="tel"
+                  fullWidth
+                  variant="outlined"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </>
+            ) : (
+              <TextField
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                id="numberConsultar"
+                label="Id Paciente"
+                name="idPacienteActualizar"
+                value={idPacienteActualizar}
+                type="number"
+                onChange={(e) => setIdPacienteActualizar(e.target.value)}
+                sx={{ marginBottom: "1rem", marginTop: "1rem" }}
+                slotProps={{
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
+              />
+            )}
             <Select
               name="medic"
               value={formData.medic}
@@ -398,6 +480,17 @@ function General() {
                 renderInput={(params) => <TextField {...params} fullWidth />}
               />
             </LocalizationProvider>
+
+            <TextField
+              margin="dense"
+              name="consultorio"
+              label="Consultorio (Opcional)"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={formData.consultorio}
+              onChange={handleChange}
+            />
           </CustomDialog>
 
           {/* Boton Pacientes */}

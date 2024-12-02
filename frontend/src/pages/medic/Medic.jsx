@@ -710,7 +710,7 @@ function Medic() {
                 shrink: true,
               }}
               label="Historia clínica familiar"
-              name="historiaFamiliar"
+              name="historiaClinica"
               defaultValue={expedienteActualizar?.historiaClinica}
               onChange={handleChangeExpedienteActualizar}
               fullWidth

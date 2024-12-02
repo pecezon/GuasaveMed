@@ -1,4 +1,5 @@
 import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export function generarRecetaPDF(receta) {
   const doc = new jsPDF();
@@ -26,4 +27,43 @@ export function generarRecetaPDF(receta) {
 
   // Descargar PDF
   doc.save("receta.pdf");
+}
+
+export function generarListadoCitasPDF(citas) {
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("GuasaveMed - Reporte de Pacientes", 14, 20);
+
+  const headers = [
+    [
+      "ID Paciente",
+      "Nombre",
+      "Edad",
+      "Teléfono",
+      "Fecha",
+      "Doctor",
+      "Razón de Ingreso",
+    ],
+  ];
+
+  const rows = citas.map((item) => [
+    item.paciente.id,
+    item.paciente.nombre,
+    item.paciente.edad,
+    item.paciente.telefono,
+    new Date(item.fecha).toLocaleDateString(),
+    item.empleado.nombre,
+    item.razonIngreso || "No especificada",
+  ]);
+
+  autoTable(doc, {
+    head: headers,
+    body: rows,
+    startY: 30,
+    styles: { fontSize: 10 },
+    headStyles: { fillColor: [22, 160, 133] },
+  });
+
+  doc.save("reporte_pacientes.pdf");
 }

@@ -6,13 +6,16 @@ import { getEmpleado } from "../../functions/empleado";
 import { getCitasPorDoctor } from "../../functions/cita";
 
 //Componentes de Material UI
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 //Colores
 import colors from "../../utils/colors";
 
 //Componentes personalizados
 import ListaCitas from "../../components/ListaCitas";
+
+//Pdf
+import { generarListadoCitasPDF } from "../../functions/pdf";
 
 const GestionadorCitas = () => {
   //Obtener Doctor
@@ -105,6 +108,17 @@ const GestionadorCitas = () => {
             maxWidth: "300px",
           }}
         />
+        {loading ? (
+          <Typography>Cargando...</Typography>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => generarListadoCitasPDF(citas)}
+          >
+            Obtener Listado De Citas
+          </Button>
+        )}
       </Box>
 
       {/* Panel derecho */}
