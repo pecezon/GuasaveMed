@@ -23,7 +23,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
 //React router
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 //Funciones de la API
 import { getDoctores } from "../../functions/empleado";
@@ -34,8 +34,9 @@ function General() {
   //React router
   const navigate = useNavigate();
 
-  //Info del usuario
-  const user = "JUAN PABLO CARDENAS DE DIOS";
+  //Obtener el id del empleado
+  const location = useLocation();
+  const { nombre } = location.state || {};
 
   //Pop ups y sus funciones
   const [openAgendar, setOpenAgendar] = useState(false);
@@ -267,7 +268,7 @@ function General() {
             marginTop: "2rem",
           }}
         >
-          {user}
+          {nombre}
         </Typography>
       </Box>
 

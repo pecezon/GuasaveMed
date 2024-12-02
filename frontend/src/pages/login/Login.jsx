@@ -25,7 +25,7 @@ function Login() {
       console.log(response);
 
       //Si es recepcionista general
-      if (tipo === "rg") navigate("/general");
+      if (tipo === "rg") navigate("/general", { state: { nombre: response.nombre } });
 
       //Si es recepcionista personal
       else if (tipo === "rp") navigate("/personal", { state: { id: response.id } });
@@ -170,20 +170,7 @@ function Login() {
           Iniciar Sesion
         </Button>
       </Box>
-      <Box
-        component="img"
-        src="/images/WELCOME.png"
-        alt="Imagen de bienvenida"
-        sx={{
-          position: "absolute",
-          top: "1%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "50%",
-          height: "auto",
-          zIndex: 3,
-        }}
-      />
+
       <Box
         component="img"
         src="/images/ninaGlobos.png"
