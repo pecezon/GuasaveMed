@@ -1,7 +1,8 @@
 import React, { useState } from 'react'; 
 import { Box, Button, IconButton, InputAdornment, Typography } from "@mui/material";
 import TextField from '@mui/material/TextField';
-
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
 
 import { login } from '../../functions/login';
@@ -41,6 +42,9 @@ function Login() {
     }
   }
 
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   return (
     <Box
       sx={{
@@ -75,7 +79,7 @@ function Login() {
         justifyContent: "space-evenly",
         gap: { xs: "0.5rem", sm: "1rem", md: "1.5rem" },
         width: {xs: "80%", sm: "50%", md: "30%"},
-        
+        //marginTop: {xs: "30%", sm: "20%", md: "7%"}
       }}>
 
         <TextField 
@@ -121,7 +125,7 @@ function Login() {
           label="Contrasena"
           color="56210A"
           variant="outlined"
-          type='password'
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           focused
@@ -151,7 +155,17 @@ function Login() {
               },
             },
           }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton onClick={handleClickShowPassword} edge="end">
+                  {showPassword ? <VisibilityOff/> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
+
         <Button
           variant="contained"
           sx={{
@@ -172,9 +186,6 @@ function Login() {
       </Box>
 
       <Box
-        component="img"
-        src="/images/ninaGlobos.png"
-        alt="Niña con globos"
         sx={{
           position: "absolute",
           backgroundImage: "url('/images/ninaGlobos.png')",
@@ -183,8 +194,8 @@ function Login() {
           alignSelf: 'baseline',
           width: 400,
           height: 400,
-          marginTop: "-10%",
-          marginLeft: "-60%",
+          marginTop: "0%",
+          marginLeft: "10%",
           zIndex: -1,
           pointerEvents: 'none',
         }}
